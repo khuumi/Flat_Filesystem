@@ -31,7 +31,7 @@ exec: make_users
 .PHONY: default
 
 make_users:
-	mkdir flat_fs_repo
+	- mkdir flat_fs_repo
 	chown -R flat_fs flat_fs_repo
 	chmod 700 -R flat_fs_repo
 	FILENAME=$(usernames)
@@ -39,12 +39,12 @@ make_users:
 	while IFS=" " read -r -a input; do
 		user="$${input[0]}"
 		useradd $$user
-	for i in "$${input[@]:1}" do
-		groupadd $$i
-		echo "Added group $$i"
-		usermod -a -G $$i $$user 
-		echo "Added $$user to $$i"
-	done
+		for i in "$${input[@]:1}" do
+			groupadd $$i
+			echo "Added group $$i"
+			usermod -a -G $$i $$user 
+			echo "Added $$user to $$i"
+		done
 
 	done < $$FILENAME
 
