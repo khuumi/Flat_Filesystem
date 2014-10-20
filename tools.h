@@ -14,5 +14,8 @@ int get_real_groupname();
 int valid_user(string user);
 int valid_group(string group);
 int validate_acl(string line);
+int sanitize(string to_sanitize, int type);
+int is_underscore(char c);
+
 
 
