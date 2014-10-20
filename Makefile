@@ -38,7 +38,7 @@ make_users:
 	
 	while IFS=" " read -r -a input; do
 		user="$${input[0]}"
-  		useradd $user
+  		useradd $$user
     for i in "$${input[@]:1}" do
     	groupadd $$i
     	echo "Added group $$i"
