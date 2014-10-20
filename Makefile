@@ -24,8 +24,8 @@ objects = objput.o objget.o objlist.o objgetacl.o objsetacl.o objtestacl.o tools
 # 	@#echo put your default initialization logic here
 # endif
 
-exec: make_users
-	build
+exec: make_users build
+	
 
 
 .PHONY: default
