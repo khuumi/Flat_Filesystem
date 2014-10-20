@@ -3,7 +3,10 @@
 #include <string>
 #include <fstream>
 
-void change_permissions(string filename);
+using std::string;
+
+
+int change_permissions(string filename);
 int raise_privilege();
 int drop_privilege();
 string get_real_username();

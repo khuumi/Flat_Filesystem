@@ -17,7 +17,7 @@ using namespace std;
 static uid_t euid = 1003;
 static uid_t ruid = getuid();
 
- void change_permissions(string filename)
+ int change_permissions(string filename)
  {
  	const char *f_name = filename.c_str();
     int stat;
@@ -27,6 +27,8 @@ static uid_t ruid = getuid();
     	cerr << "Couldn't change permissions for file " <<f_name <<endl;
     else
     	cerr << "Set permissions for " << f_name << endl;
+
+    return 0;
  }
 
 
