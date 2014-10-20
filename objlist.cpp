@@ -3,6 +3,8 @@
 #include <fstream>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <cstdlib>
+
 #include "tools.h"
 
 using namespace std;

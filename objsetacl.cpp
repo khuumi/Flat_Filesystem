@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cstdlib>
+
 #include "tools.h"
 using namespace std;
 
@@ -45,7 +47,7 @@ int main(int argc, char * argv[]){
 	string path = "flat_fs_repo/" + file_name;
 
 	ifstream file_to_open;
-	file_to_open.open(path);
+	file_to_open.open(path.c_str());
 
 	// Check for this specific type of permission
 	if (check_acl(file_to_open, user_name, group_name, "p") < 1){
@@ -69,7 +71,7 @@ int main(int argc, char * argv[]){
 	/** First create a temp file to copy to **/
 	fstream temp_file; 
 	path_to_temp = "flat_fs_repo/TEMP"
-	temp_file.open(path_to_temp);
+	temp_file.open(path_to_temp.c_str());
 
 	// copy (starting from after the ACL)
 	if ( temp_file.is_open() && file_to_open.is_open()){
@@ -81,12 +83,12 @@ int main(int argc, char * argv[]){
 	temp_file.close();
 	change_permissions(path_to_temp);
 
-	temp_file.open(path_to_temp);
+	temp_file.open(path_to_temp.c_str());
 
 	file_to_open.close();
 
 	ofstream file_to_write;
-	file_to_write.open(path);
+	file_to_write.open(path.c_str());
 
 	//allow user input for the new ACL lines
 	while (getline(cin, line)){

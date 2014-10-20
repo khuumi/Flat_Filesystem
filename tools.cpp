@@ -72,7 +72,7 @@ string get_real_username(){
 	else 
 		return p->pw_name ;
 
-	return "";
+	return NULL;
 
 }
 
@@ -87,7 +87,7 @@ string get_real_groupname(){
 	else 
 		return p->gr_name ;
 
-	return "";
+	return NULL;
 }
 
 

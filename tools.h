@@ -5,7 +5,6 @@
 
 using std::string;
 
-
 int change_permissions(string filename);
 int raise_privilege();
 int drop_privilege();

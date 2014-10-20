@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cstdlib>
+
 #include "tools.h"
 
 using namespace std;
@@ -50,7 +52,7 @@ int main(int argc, char * argv[]){
 
 
 	ifstream file_to_read;
-	file_to_read.open(path);
+	file_to_read.open(path.c_str());
 
 	if (check_acl(file_to_read, user_name, group_name, "r") < 1){
 		cerr << "Sorry you don't have permissions to see this file!!!\n" << endl;

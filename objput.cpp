@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cstdlib>
 #include "tools.h"
 
 using namespace std;
@@ -38,7 +39,7 @@ int main(int argc, char * argv[]){
 
 	ofstream file_to_write; 
 
-	file_to_write.open(path);
+	file_to_write.open(path.c_str());
 
 	if (file_to_write.is_open()){
 
