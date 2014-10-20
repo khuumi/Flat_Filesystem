@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sys/types.h>
 #include <unistd.h>
+#include <pwd.h>
 #include "tools.h"
 
 using std::ifstream;
@@ -21,7 +22,7 @@ static uid_t ruid = getuid();
  	const char *f_name = filename.c_str();
     int stat;
  
-    stat = chmod(f_name, S_IRWXU);
+    stat = chmod(f_name, "S_IRWXU");
     if (stat)
     	cerr << "Couldn't change permissions for file " <<f_name <<endl;
     else
@@ -96,8 +97,8 @@ int valid_user(string user){
 
 	if ((getpwnam(usr)) == NULL )
 		return -1;
-	else 
-		return 0;
+	
+	return 0;
 }
 
 int valid_group(string group){
@@ -106,8 +107,8 @@ int valid_group(string group){
 
 	if ((getgrnam(grp)) == NULL )
 		return -1;
-	else 
-		return 0;
+	
+	return 0;
 }
 
 int validate_acl(string line){
@@ -190,11 +191,11 @@ int check_acl(ifstream& file_to_open,
 
 //make sure that there is only letters, digits, underscores (and only one dash)
 int sanitize(string to_sanitize, int type){
-	if (type = 0){
-		int found = object_name.find_first_of("+");
+	if (type == 0){
+		int found = to_sanitize.find_first_of("+");
 		
 		if (found > 0)
-			object_name[found] = '_';
+			to_sanitize[found] = '_';
 	}
 
 	//replace all underscores
