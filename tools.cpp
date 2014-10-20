@@ -8,7 +8,6 @@
 #include <unistd.h>
 #include "tools.h"
 
-using std::string;
 using std::ifstream;
 using std::istringstream;
 using std::cout;
@@ -70,7 +69,7 @@ string get_real_username(){
 	if ((p = getpwuid(user_id)) == NULL )
 		cerr << "getpwuid() error" << endl;
 	else 
-		return p->pw_name ;
+		return p->pw_name;
 
 	return "test";
 
