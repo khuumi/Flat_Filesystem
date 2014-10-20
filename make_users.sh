@@ -1,5 +1,7 @@
 #!/bin/bash
 mkdir flat_fs_repo
+chown -R flat_fs flat_fs_repo
+chmod 700 -R flat_fs_repo
 
 FILE=$1
 while IFS=" " read -r -a input; do
