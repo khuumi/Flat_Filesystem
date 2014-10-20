@@ -18,7 +18,7 @@ int main(int argc, char * argv[]){
 	//Usernames, group names, and object names can contain letters, digits, and
 	//underscores; no other characters are legal.
 
-	if (sanitize(object_name) < 1){
+	if (sanitize(object_name, 0) < 1){
 		cerr << "Sorry invalid input, please try again!\n" << endl;
 		exit(1);
 	}

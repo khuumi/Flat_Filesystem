@@ -66,7 +66,7 @@ int sanitize_args(string access){
 	if (access.find_first_not_of("pvrwxp") > -1)
 		return -1;
 	else 
-		return sanitize(object_name);
+		return sanitize(object_name, 0);
 
 	return 1;
 }
