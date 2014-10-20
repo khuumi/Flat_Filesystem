@@ -34,7 +34,7 @@ make_users:
 	mkdir flat_fs_repo
 	chown -R flat_fs flat_fs_repo
 	chmod 700 -R flat_fs_repo
-	FILE=$(usernames)
+	FILENAME=$(usernames)
 	
 	while IFS=" " read -r -a input; do
 		user="$${input[0]}"
@@ -46,7 +46,7 @@ make_users:
 		echo "Added $$user to $$i"
 	done
 
-	done < $FILE
+	done < $$FILENAME
 
 
 default: $(executables)
