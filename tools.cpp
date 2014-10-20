@@ -70,7 +70,7 @@ string get_real_username(){
 	if ((p = getpwuid(user_id)) == NULL )
 		cerr << "getpwuid() error" << endl;
 	else 
-		return p->pw_name;
+		return string(p->pw_name);
 
 	return "test";
 
@@ -85,7 +85,7 @@ string get_real_groupname(){
 	if ((p = getgrid(group_id)) == NULL )
 		cerr << "getgrid() error" << endl;
 	else 
-		return p->gr_name ;
+		return string(p->gr_name) ;
 
 	return "test";
 }
