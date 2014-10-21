@@ -43,6 +43,8 @@ int main(int argc, char * argv[]){
 
 	if (file_to_write.is_open()){
 
+		cout << "objput file is open" << endl;
+
 		string line;
 
 		string default_acl = user_name + ".* rwxpv\n%\n";

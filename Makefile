@@ -21,7 +21,7 @@ init_scripts:
 	- mkdir flat_fs_repo
 	chown -R flat_fs flat_fs_repo
 	chmod 700 -R flat_fs_repo
-	./make_users.sh $(usernames)
+	./make_users.sh $(userfile)
 
 	chmod 4333 $(executables)
 
@@ -69,7 +69,7 @@ test: build
 .PHONY: clean
 clean:
 	rm -rf *.o *~ a.out core $(objects) $(executables) flat_fs_repo
-	./remove_users.sh $(usernames)
+	./remove_users.sh $(userfile)
 
 .PHONY: all
 all: clean default
