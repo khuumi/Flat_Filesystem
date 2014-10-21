@@ -29,11 +29,14 @@ int main(int argc, char * argv[]){
 		exit(1);
 	}
 
+	uid_t euid = get_uid("flat_fs");
+
 	// Set the egid to flat_fs's gid
-	if(raise_privilege() < 0 ){
+	if(raise_privilege(euid) < 0 ){
 		cerr << "Sorry there was an error accessing the repository" << endl;
 		exit(1);
 	}
+
 
 
 	string user_name = get_real_username();
@@ -69,7 +72,7 @@ int main(int argc, char * argv[]){
 		file_to_read.close();
 	}
 
-	drop_privilege();
+	drop_privilege(euid);
 
 }
 

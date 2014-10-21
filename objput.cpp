@@ -25,11 +25,16 @@ int main(int argc, char * argv[]){
 		exit(1);
 	}
 
+	uid_t euid = get_uid("flat_fs");
+
 	// Set the egid to flat_fs's gid
-	if(raise_privilege() < 0 ){
+	if(raise_privilege(euid) < 0 ){
 		cerr << "Sorry there was an error accessing the repository" << endl;
 		exit(1);
 	}
+
+	cout << geteuid() << endl;
+
 
 	string user_name = get_real_username();
 	string group_name = get_real_groupname();
@@ -63,7 +68,7 @@ int main(int argc, char * argv[]){
 		// chmod the path 
 
 	}
-	drop_privilege();
+	drop_privilege(euid);
 
 }
 

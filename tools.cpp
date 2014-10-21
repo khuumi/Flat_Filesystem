@@ -19,7 +19,7 @@ using std::istringstream;
 using std::cout;
 using namespace std;
 
-static uid_t euid = 1003;
+// static uid_t euid = 1003;
 static uid_t ruid = getuid();
 
  int change_permissions(string filename)
@@ -37,7 +37,18 @@ static uid_t ruid = getuid();
  }
 
 
-int raise_privilege(){
+int get_uid(string user){
+	const char *usr = user.c_str();
+	struct passwd *p;
+	if ((p = getpwnam(usr)) == NULL )
+		return -1;
+
+	return (int) p->pw_uid;
+
+}
+
+
+int raise_privilege(uid_t euid){
 	int status;
 
 	#ifdef _POSIX_SAVED_IDS
@@ -52,7 +63,7 @@ int raise_privilege(){
 	// Set the egid to flat_fs groupid
 }
 
-int drop_privilege(){
+int drop_privilege(uid_t euid){
   	int status;
 
 	#ifdef _POSIX_SAVED_IDS
