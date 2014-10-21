@@ -70,8 +70,8 @@ int main(int argc, char * argv[]){
 
 	/** First create a temp file to copy to **/
 	fstream temp_file; 
-	string path_to_temp = "flat_fs_repo/TEMP".c_str();
-	temp_file.open(path_to_temp);
+	string path_to_temp = "flat_fs_repo/TEMP";
+	temp_file.open(path_to_temp.c_str());
 
 	// copy (starting from after the ACL)
 	if ( temp_file.is_open() && file_to_open.is_open()){
@@ -112,7 +112,7 @@ int main(int argc, char * argv[]){
 	file_to_write.close();
 	change_permissions(path);
 
-	remove(path_to_temp);
+	remove(path_to_temp.c_str());
 	drop_privilege();
 
 
