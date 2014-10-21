@@ -7,8 +7,9 @@ using std::string;
 using std::ifstream;
 
 int change_permissions(string filename);
-int raise_privilege();
-int drop_privilege();
+int get_uid(string user);
+int raise_privilege(uid_t euid);
+int drop_privilege(uid_t euid);
 string get_real_username();
 string get_real_groupname();
 int valid_user(string user);

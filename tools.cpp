@@ -47,7 +47,6 @@ int get_uid(string user){
 
 }
 
-
 int raise_privilege(uid_t euid){
 	int status;
 
