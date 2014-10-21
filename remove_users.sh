@@ -10,4 +10,3 @@ while IFS=" " read -r -a input; do
      done
 
 done < $FILE
-

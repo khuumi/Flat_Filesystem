@@ -4,7 +4,6 @@
 #include <cstdlib>
 
 #include "tools.h"
-
 using namespace std;
 
 int sanitize_args(string access, string object_name);

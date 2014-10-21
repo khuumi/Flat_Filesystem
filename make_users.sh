@@ -10,6 +10,5 @@ while IFS=" " read -r -a input; do
     	usermod -a -G $i $user 
     	echo "Added $user to $i"
      done
-
 done < $FILE
 
