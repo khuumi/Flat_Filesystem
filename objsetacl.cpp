@@ -79,7 +79,7 @@ int main(int argc, char * argv[]){
 			temp_file_contents = temp_file_contents + line +"\n";
 	}
 
-	cout <<"contents" temp_file_contents << endl;
+	cout <<"contents" << temp_file_contents << endl;
 
 	file_to_open.close();
 
