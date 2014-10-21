@@ -29,9 +29,6 @@ static uid_t ruid = getuid();
     stat = chmod(f_name, S_IRWXU);
     if (stat)
     	cerr << "Couldn't change permissions for file " <<f_name <<endl;
-    else
-    	// cerr << "Set permissions for " << f_name << endl;
-
     return 0;
  }
 
