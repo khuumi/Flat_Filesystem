@@ -213,7 +213,7 @@ int sanitize(string to_sanitize, int type){
 	if (type == 0){
 		int found = to_sanitize.find_first_of("+");
 		
-		if (found > 0)
+		if (found >= 0)
 			to_sanitize[found] = '_';
 	}
 
@@ -221,10 +221,10 @@ int sanitize(string to_sanitize, int type){
 	replace_if( to_sanitize.begin(), to_sanitize.end(), is_underscore, ' ' );
 
 	//check for alphanumerical
-	if (all_of(to_sanitize.begin(), to_sanitize.end(), ::isalnum) < 1)
-		return -1;
+	if (all_of(to_sanitize.begin(), to_sanitize.end(), ::isalnum))
+		return 1;
 
-	return 1;
+	return -1;
 }
 
 int is_underscore(char c){

@@ -12,8 +12,9 @@
 using namespace std;
 
 int main(int argc, char * argv[]){
+	int show_size = 0;
 
-	if (argc < 2) {
+	if (argc < 1) {
 		cerr << "Usage:" 
 			<< argv[0] 
 			<<  "[-l]\n" 
@@ -22,9 +23,7 @@ int main(int argc, char * argv[]){
 
 	}
 
-	int show_size = 0;
-
-	if (argc > 1){
+	if (argc = 2){
 		string option = argv[1];
 
 		if (option == "-l")
