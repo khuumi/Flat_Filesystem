@@ -34,7 +34,7 @@ int main(int argc, char * argv[]){
 	string user_name = get_real_username();
 	string group_name = get_real_groupname();
 
-	owner_name = user_name;
+	string owner_name = user_name;
 
 	int delim_loc = object_name.find('+');
 

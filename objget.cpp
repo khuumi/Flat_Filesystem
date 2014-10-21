@@ -2,7 +2,6 @@
 #include <string>
 #include <fstream>
 #include <cstdlib>
-
 #include "tools.h"
 
 using namespace std;
