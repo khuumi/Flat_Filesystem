@@ -61,6 +61,8 @@ int main(int argc, char * argv[]){
 	// Check for this specific type of permission
 	if (check_acl(file_to_read, user_name, group_name, "v") < 1){
 		cerr << "Sorry you don't have permissions to see the ACL!!!\n" << endl;
+		exit(1);
+
 	}
 
 	string line;

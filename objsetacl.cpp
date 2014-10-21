@@ -16,7 +16,6 @@ int main(int argc, char * argv[]){
 			<<  " <objectname>\n" 
 			<< endl;
 			exit(1);
-
 	}
 
 	string object_name = argv[1];
@@ -59,6 +58,7 @@ int main(int argc, char * argv[]){
 	// Check for this specific type of permission
 	if (check_acl(file_to_open, user_name, group_name, "p") < 1){
 		cerr << "Sorry you don't have permissions to set the ACL!!!\n" << endl;
+		exit(1);
 	}
 
 	string line;
@@ -88,7 +88,7 @@ int main(int argc, char * argv[]){
 
 	// Close up the temp file and then reopen it as an input stream, close up the previous input
 	temp_file.close();
-	change_permissions(path_to_temp);
+	// change_permissions(path_to_temp);
 
 	temp_file.open(path_to_temp.c_str());
 
@@ -104,6 +104,8 @@ int main(int argc, char * argv[]){
 			file_to_write << line << endl;
 		else {
 			file_to_write << old_acl << endl;
+			cerr << "Bad ACL - reverting"
+
 			break;
 		}
 		

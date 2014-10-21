@@ -178,9 +178,9 @@ int check_acl(ifstream& file_to_open,
 			if (line[0] == '%')
 				break;
 
-			cout << "gets into acl check" <<endl;
+			// cout << "gets into acl check" <<endl;
 
-			cout << line << endl;
+			// cout << line << endl;
 
 			string user_group, user, group, ops;
 
