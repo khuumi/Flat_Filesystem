@@ -4,6 +4,7 @@
 #include <fstream>
 
 using std::string;
+using std::ifstream;
 
 int change_permissions(string filename);
 int raise_privilege();
