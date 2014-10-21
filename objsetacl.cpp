@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <unistd.h>
+#include <sys/types.h>	
 #include <cstdlib>
 
 #include "tools.h"
