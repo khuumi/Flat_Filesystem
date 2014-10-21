@@ -13,7 +13,7 @@ int main(int argc, char * argv[]){
 			<< argv[0] 
 			<<  " <objectname>\n" 
 			<< endl;
-			exit(1)
+			exit(1);
 	}
 	string object_name = argv[1];
 

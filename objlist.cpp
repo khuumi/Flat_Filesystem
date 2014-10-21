@@ -16,6 +16,8 @@ int main(int argc, char * argv[]){
 			<< argv[0] 
 			<<  "[-l]\n" 
 			<< endl;
+			exit(1);
+
 	}
 
 	int show_size = 0;
