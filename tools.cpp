@@ -85,7 +85,7 @@ string get_real_username(){
 string get_real_groupname(){
 	uid_t group_id = getgid();
 
-	struct passwd *p;
+	struct group *p;
 	
 	if ((p = getgrgid(group_id)) == NULL )
 		cerr << "getgrgid() error" << endl;
