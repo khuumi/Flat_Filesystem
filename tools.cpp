@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <pwd.h>
+#include <grp.h>
 #include <algorithm>  
 #include <ctype.h>
 #include "tools.h"
