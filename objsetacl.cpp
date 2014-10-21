@@ -58,6 +58,7 @@ int main(int argc, char * argv[]){
 	// Check for this specific type of permission
 	if (check_acl(file_to_open, user_name, group_name, "p") < 1){
 		cerr << "Sorry you don't have permissions to set the ACL!!!" << endl;
+
 		exit(1);
 	}
 
@@ -79,25 +80,25 @@ int main(int argc, char * argv[]){
 
 	file_to_open.close();
 
-	ofstream file_to_write;
-	file_to_write.open(path.c_str());
+
 
 	//allow user input for the new ACL lines
 	while (getline(cin, line)){
-
 		if (validate_acl(line) > -1)
-			file_to_write << line << endl;
+			acl_info = acl_info + line +"\n";
 		else {
 			cerr << "Bad ACL - reverting" << endl;
-			file_to_write.close();
-			change_permissions(path);
 			drop_privilege(euid);
 			exit(1);
 		}	
 	}
 
-	//input the final delimiter 
-	file_to_write <<"%" << endl;
+
+	ofstream file_to_write;
+	file_to_write.open(path.c_str());
+
+	// all acl info passed validation
+	file_to_write << acl_info << "%" <<endl;
 
 	file_to_write << temp_file_contents;
 
