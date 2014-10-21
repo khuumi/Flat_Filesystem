@@ -80,7 +80,7 @@ int main(int argc, char * argv[]){
 
 	file_to_open.close();
 
-
+	string acl_info = "";
 
 	//allow user input for the new ACL lines
 	while (getline(cin, line)){
