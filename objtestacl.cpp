@@ -15,7 +15,7 @@ int main(int argc, char * argv[]){
 	if (argc < 4) {
 		cerr << "Usage:" 
 			<< argv[0] 
-			<<  "-a <access> <objectname>\n" 
+			<<  "-a <access> <objectname>" 
 			<< endl;
 			exit(1);
 	}
@@ -27,7 +27,7 @@ int main(int argc, char * argv[]){
 	//underscores; no other characters are legal.
 
 	if (sanitize_args(access, object_name) < 1){
-		cerr << "Sorry invalid input, please try again!\n" << endl;
+		cerr << "Sorry invalid input, please try again!" << endl;
 		exit(1);
 	}
 

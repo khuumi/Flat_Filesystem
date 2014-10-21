@@ -14,7 +14,7 @@ int main(int argc, char * argv[]){
 	if (argc < 2) {
 		cerr << "Usage:" 
 			<< argv[0] 
-			<<  " <objectname>\n" 
+			<<  " <objectname>" 
 			<< endl;
 			exit(1);
 
@@ -27,7 +27,7 @@ int main(int argc, char * argv[]){
 	//underscores; no other characters are legal.
 
 	if (sanitize(object_name, 0) < 0){
-		cerr << "Sorry invalid input, please try again!\n" << endl;
+		cerr << "Sorry invalid input, please try again!" << endl;
 		exit(1);
 	}
 
@@ -61,7 +61,7 @@ int main(int argc, char * argv[]){
 	file_to_read.open(path.c_str());
 
 	if (check_acl(file_to_read, user_name, group_name, "r") < 1){
-		cerr << "Sorry you don't have permissions to see this file!!!\n" << endl;
+		cerr << "Sorry you don't have permissions to see this file!!!" << endl;
 		exit(1);
 	}
 

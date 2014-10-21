@@ -17,7 +17,7 @@ int main(int argc, char * argv[]){
 	if (argc < 1) {
 		cerr << "Usage:" 
 			<< argv[0] 
-			<<  "[-l]\n" 
+			<<  "[-l]" 
 			<< endl;
 			exit(1);
 

@@ -13,7 +13,7 @@ int main(int argc, char * argv[]){
 	if (argc < 2) {
 		cerr << "Usage:" 
 			<< argv[0] 
-			<<  " <objectname>\n" 
+			<<  " <objectname>" 
 			<< endl;
 			exit(1);
 	}
@@ -24,7 +24,7 @@ int main(int argc, char * argv[]){
 	//underscores; no other characters are legal.
 
 	if (sanitize(object_name, 0) < 1){
-		cerr << "Sorry invalid input, please try again!\n" << endl;
+		cerr << "Sorry invalid input, please try again!" << endl;
 		exit(1);
 	}
 
@@ -57,13 +57,9 @@ int main(int argc, char * argv[]){
 
 	// Check for this specific type of permission
 	if (check_acl(file_to_open, user_name, group_name, "p") < 1){
-		cerr << "Sorry you don't have permissions to set the ACL!!!\n" << endl;
+		cerr << "Sorry you don't have permissions to set the ACL!!!" << endl;
 		exit(1);
 	}
-
-
-
-
 
 	string temp_file_contents = "";
 
@@ -101,7 +97,7 @@ int main(int argc, char * argv[]){
 	}
 
 	//input the final delimiter 
-	file_to_write <<"%\n" << endl;
+	file_to_write <<"%" << endl;
 
 	file_to_write << temp_file_contents;
 

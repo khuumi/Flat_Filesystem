@@ -26,7 +26,7 @@ int main(int argc, char * argv[]){
 	//underscores; no other characters are legal.
 
 	if (sanitize(object_name, 0) < 1){
-		cerr << "Sorry invalid input, please try again!\n" << endl;
+		cerr << "Sorry invalid input, please try again!" << endl;
 		exit(1);
 	}
 
@@ -60,7 +60,7 @@ int main(int argc, char * argv[]){
 
 	// Check for this specific type of permission
 	if (check_acl(file_to_read, user_name, group_name, "v") < 1){
-		cerr << "Sorry you don't have permissions to see the ACL!!!\n" << endl;
+		cerr << "Sorry you don't have permissions to see the ACL!!!" << endl;
 		exit(1);
 
 	}

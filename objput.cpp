@@ -13,7 +13,7 @@ int main(int argc, char * argv[]){
 	if (argc < 2) {
 		cerr << "Usage:" 
 			<< argv[0] 
-			<<  " <objectname>\n" 
+			<<  " <objectname>" 
 			<< endl;
 			exit(1);
 	}
@@ -23,7 +23,7 @@ int main(int argc, char * argv[]){
 	//underscores; no other characters are legal.
 
 	if (sanitize(object_name, 1) < 1){
-		cerr << "Sorry invalid input, please try again!\n" << endl;
+		cerr << "Sorry invalid input, please try again!" << endl;
 		exit(1);
 	}
 
@@ -35,7 +35,7 @@ int main(int argc, char * argv[]){
 		exit(1);
 	}
 
-	cout << geteuid() << endl;
+	// cout << geteuid() << endl;
 
 
 	string user_name = get_real_username();
