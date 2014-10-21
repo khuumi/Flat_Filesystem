@@ -112,7 +112,7 @@ int main(int argc, char * argv[]){
 	//input the final delimiter 
 	file_to_write <<"%\n" << endl;
 
-	file_to_write << temp_file_contents << end;
+	file_to_write << temp_file_contents;
 
 	file_to_write.close();
 	change_permissions(path);
