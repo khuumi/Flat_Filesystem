@@ -104,7 +104,7 @@ int main(int argc, char * argv[]){
 			file_to_write << line << endl;
 		else {
 			file_to_write << old_acl << endl;
-			cerr << "Bad ACL - reverting"
+			cerr << "Bad ACL - reverting" << endl;
 
 			break;
 		}
