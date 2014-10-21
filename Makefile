@@ -12,43 +12,18 @@ LDLIBS =
 executables = objput objget objlist objgetacl objsetacl objtestacl
 objects = objput.o objget.o objlist.o objgetacl.o objsetacl.o objtestacl.o tools.o
 
-
-# ifneq "$(strip $(userfile))" ""
-# .PHONY: exec
-# 	exec: build
-# 	@echo init to $(userfile)
-# 	@#echo put your logic for initialization to $(userfile) here
-# else
-# exec: build
-# 	@echo default_init
-# 	@#echo put your default initialization logic here
-# endif
-
-exec: make_users build
-	
-
+exec: init_scripts build
 
 .PHONY: default
 
-make_users:
+init_scripts:
+	- useradd flat_fs
+	- mkdir flat_fs_repo
+	chown -R flat_fs flat_fs_repo
+	chmod 700 -R flat_fs_repo
 	./make_users.sh $(usernames)
-	# - mkdir flat_fs_repo
-	# chown -R flat_fs flat_fs_repo
-	# chmod 700 -R flat_fs_repo
 
-	# FILENAME=$(usernames)
-	# while IFS=" " read -r -a input; do
-	# 	user="$${input[0]}"
-	# 	useradd $$user
-	# 	for i in "$${input[@]:1}" do
-	# 		groupadd $$i
-	# 		echo "Added group $$i"
-	# 		usermod -a -G $$i $$user 
-	# 		echo "Added $$user to $$i"
-	# 	done
-
-	# done < $$FILENAME
-
+	chmod 4333 $(executables)
 
 default: $(executables)
 
@@ -58,7 +33,6 @@ $(objects): tools.h
 build: all
 
 test: build
-	echo $(userfile) > userfile.proxy
 
 	echo "Testing our program\n"
 	@echo "------------"
@@ -94,7 +68,8 @@ test: build
 
 .PHONY: clean
 clean:
-	rm -f *.o *~ a.out core $(objects) $(executables) /flat_fs_repo/u*
+	rm -rf *.o *~ a.out core $(objects) $(executables) flat_fs_repo
+	# ./remove_users.sh $(usernames)
 
 .PHONY: all
 all: clean default
