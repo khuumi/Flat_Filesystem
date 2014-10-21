@@ -67,7 +67,7 @@ int main(int argc, char * argv[]){
 }
 
 int sanitize_args(string access, string object_name){
-	if (access.find_first_not_of("pvrwxp") => 0)
+	if (access.find_first_not_of("pvrwxp") >= 0)
 		return -1;
 	else 
 		return sanitize(object_name, 0);
