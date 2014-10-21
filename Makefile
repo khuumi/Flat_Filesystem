@@ -12,7 +12,7 @@ LDLIBS =
 executables = objput objget objlist objgetacl objsetacl objtestacl
 objects = objput.o objget.o objlist.o objgetacl.o objsetacl.o objtestacl.o tools.o
 
-exec: init_scripts build
+exec: build init_scripts
 
 .PHONY: default
 
@@ -30,7 +30,7 @@ default: $(executables)
 $(executables): tools.o
 $(objects): tools.h
 
-build: all
+build: all 
 
 test: build
 
@@ -69,7 +69,7 @@ test: build
 .PHONY: clean
 clean:
 	rm -rf *.o *~ a.out core $(objects) $(executables) flat_fs_repo
-	# ./remove_users.sh $(usernames)
+	./remove_users.sh $(usernames)
 
 .PHONY: all
 all: clean default
