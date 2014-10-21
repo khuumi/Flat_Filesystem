@@ -189,7 +189,7 @@ int check_acl(ifstream& file_to_open,
 			if (user_name == user || user == "*"){
 				if(group_name == group || group == "*"){
 					// cout << ops.find(access) << endl;	
-					if(ops.find(access) != npos )
+					if(ops.find(access) != string::npos )
 						to_return = 1;
 				}
 			}
