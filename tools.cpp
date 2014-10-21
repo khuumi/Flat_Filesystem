@@ -197,7 +197,7 @@ int check_acl(ifstream& file_to_open,
 			if (user_name == user || user_name == "*"){
 				if(group_name == group || group == "*"){
 
-					if(ops.find(access) > 0 )
+					if(ops.find(access) >= 0 )
 						to_return = 1;
 				}
 			}
