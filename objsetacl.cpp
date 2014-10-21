@@ -70,7 +70,7 @@ int main(int argc, char * argv[]){
 
 	/** First create a temp file to copy to **/
 	fstream temp_file; 
-	path_to_temp = "flat_fs_repo/TEMP";
+	string path_to_temp = "flat_fs_repo/TEMP";
 	temp_file.open(path_to_temp.c_str());
 
 	// copy (starting from after the ACL)
