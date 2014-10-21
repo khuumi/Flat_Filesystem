@@ -35,9 +35,6 @@ int main(int argc, char * argv[]){
 		exit(1);
 	}
 
-	// cout << geteuid() << endl;
-
-
 	string user_name = get_real_username();
 	string group_name = get_real_groupname();
 
@@ -49,11 +46,7 @@ int main(int argc, char * argv[]){
 
 	file_to_write.open(path.c_str());
 
-	// cout << path << endl;
-
 	if (file_to_write.is_open()){
-
-		// cout << "objput file is open" << endl;
 
 		string line;
 
@@ -66,8 +59,9 @@ int main(int argc, char * argv[]){
 
 		file_to_write.close();
 
-		change_permissions(path);
 		// chmod the path 
+
+		change_permissions(path);
 
 	}
 	drop_privilege(euid);
