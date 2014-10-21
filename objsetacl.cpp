@@ -61,35 +61,22 @@ int main(int argc, char * argv[]){
 		exit(1);
 	}
 
-	string line;
-
-	// Go back to the beginning of the ACL
-	file_to_open.seekg(0);
-	string old_acl = "";
-	if (file_to_open.is_open()){
-
-		while (getline(file_to_open, line)){
-			if (line[0] == '%')
-				break;
-			old_acl = line + '\n';
-		}
-	}	
-
 
 	string temp_file_contents = "";
 
 	/** First create a temp file to copy to **/
-	fstream temp_file; 
-	string path_to_temp = "flat_fs_repo/TEMP";
-	temp_file.open(path_to_temp.c_str());
+	// fstream temp_file; 
+	// string path_to_temp = "flat_fs_repo/TEMP";
+	// temp_file.open(path_to_temp.c_str());
 
 	// copy (starting from after the ACL)
-	if ( temp_file.is_open() && file_to_open.is_open()){
+	string line;
+	if (file_to_open.is_open()){
 		while(getline(file_to_open, line))  
 			temp_file_contents = temp_file_contents + "\n";
 	}
 
-	cout << temp_file_contents << endl;
+	cout <<"contents" temp_file_contents << endl;
 
 	file_to_open.close();
 
@@ -102,10 +89,11 @@ int main(int argc, char * argv[]){
 		if (validate_acl(line) > -1)
 			file_to_write << line << endl;
 		else {
-			file_to_write << old_acl << endl;
 			cerr << "Bad ACL - reverting" << endl;
-
-			break;
+			file_to_write.close();
+			change_permissions(path);
+			drop_privilege(euid);
+			exit(1);
 		}	
 	}
 
