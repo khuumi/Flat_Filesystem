@@ -217,8 +217,8 @@ int sanitize(string to_sanitize, int type){
 			to_sanitize[found] = '_';
 	}
 
-	//replace all underscores
-	replace_if( to_sanitize.begin(), to_sanitize.end(), is_underscore, ' ' );
+	//replace all underscores with an alnum (in this case 'a')
+	replace_if(to_sanitize.begin(), to_sanitize.end(), is_underscore, 'a' );
 
 	//check for alphanumerical
 	if (all_of(to_sanitize.begin(), to_sanitize.end(), ::isalnum))
