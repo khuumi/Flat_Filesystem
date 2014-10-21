@@ -196,7 +196,7 @@ int check_acl(ifstream& file_to_open,
 			cout << ops << endl;
 
 
-			if (user_name == user || user_name == "*"){
+			if (user_name == user || user == "*"){
 				if(group_name == group || group == "*"){
 
 					cout << "got down to access" << endl;
