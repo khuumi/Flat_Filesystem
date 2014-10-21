@@ -17,6 +17,7 @@ int main(int argc, char * argv[]){
 			<< argv[0] 
 			<<  "-a <access> <objectname>\n" 
 			<< endl;
+			exit(1);
 	}
 
 	string access = argv[2];

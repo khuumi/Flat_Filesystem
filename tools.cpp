@@ -191,6 +191,11 @@ int check_acl(ifstream& file_to_open,
 			user = user_group.substr(0, delim_loc);
 			group = user_group.erase(0, delim_loc + 1);
 
+			cout << user <<endl;
+			cout << group << endl;
+			cout << ops << endl;
+
+
 			if (user_name == user || user_name == "*"){
 				if(group_name == group || group == "*"){
 
