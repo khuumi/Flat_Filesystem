@@ -7,6 +7,8 @@
 
 using namespace std;
 
+int sanitize_args(string access, string object_name);
+
 int main(int argc, char * argv[]){
 
 	if (argc < 4) {
@@ -64,8 +66,8 @@ int main(int argc, char * argv[]){
 	return 0;
 }
 
-int sanitize_args(string access){
-	if (access.find_first_not_of("pvrwxp") > -1)
+int sanitize_args(string access, string object_name){
+	if (access.find_first_not_of("pvrwxp") => 0)
 		return -1;
 	else 
 		return sanitize(object_name, 0);
