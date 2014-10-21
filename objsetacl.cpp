@@ -75,6 +75,9 @@ int main(int argc, char * argv[]){
 		}
 	}	
 
+
+	string temp_file_contents = "";
+
 	/** First create a temp file to copy to **/
 	fstream temp_file; 
 	string path_to_temp = "flat_fs_repo/TEMP";
@@ -83,14 +86,10 @@ int main(int argc, char * argv[]){
 	// copy (starting from after the ACL)
 	if ( temp_file.is_open() && file_to_open.is_open()){
 		while(getline(file_to_open, line))  
-			temp_file << line << endl;
+			temp_file_contents = temp_file_contents + "\n";
 	}
 
-	// Close up the temp file and then reopen it as an input stream, close up the previous input
-	temp_file.close();
-	// change_permissions(path_to_temp);
-
-	temp_file.open(path_to_temp.c_str());
+	cout << temp_file_contents << endl;
 
 	file_to_open.close();
 
@@ -107,21 +106,17 @@ int main(int argc, char * argv[]){
 			cerr << "Bad ACL - reverting" << endl;
 
 			break;
-		}
-		
+		}	
 	}
 
 	//input the final delimiter 
 	file_to_write <<"%\n" << endl;
 
-	while (getline(temp_file, line))
-		file_to_write << line << endl;
+	file_to_write << temp_file_contents << end;
 
-	temp_file.close();
 	file_to_write.close();
 	change_permissions(path);
 
-	remove(path_to_temp.c_str());
 	drop_privilege(euid);
 
 
