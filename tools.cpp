@@ -199,7 +199,7 @@ int check_acl(ifstream& file_to_open,
 			if (user_name == user || user == "*"){
 				if(group_name == group || group == "*"){
 
-					cout << "got down to access" << endl;
+					// cout << "got down to access" << endl;
 
 
 					if(ops.find(access) >= 0 )

@@ -62,6 +62,9 @@ int main(int argc, char * argv[]){
 	}
 
 
+
+
+
 	string temp_file_contents = "";
 
 	/** First create a temp file to copy to **/
@@ -73,7 +76,7 @@ int main(int argc, char * argv[]){
 	string line;
 	if (file_to_open.is_open()){
 		while(getline(file_to_open, line))  
-			temp_file_contents = temp_file_contents + "\n";
+			temp_file_contents = temp_file_contents + line +"\n";
 	}
 
 	cout <<"contents" temp_file_contents << endl;
