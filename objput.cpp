@@ -13,6 +13,7 @@ int main(int argc, char * argv[]){
 			<< argv[0] 
 			<<  " <objectname>\n" 
 			<< endl;
+			exit(1)
 	}
 	string object_name = argv[1];
 
@@ -40,6 +41,8 @@ int main(int argc, char * argv[]){
 	ofstream file_to_write; 
 
 	file_to_write.open(path.c_str());
+
+	cout << path << endl;
 
 	if (file_to_write.is_open()){
 
