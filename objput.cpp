@@ -49,15 +49,15 @@ int main(int argc, char * argv[]){
 
 	file_to_write.open(path.c_str());
 
-	cout << path << endl;
+	// cout << path << endl;
 
 	if (file_to_write.is_open()){
 
-		cout << "objput file is open" << endl;
+		// cout << "objput file is open" << endl;
 
 		string line;
 
-		string default_acl = user_name + ".* rwxpv\n%\n";
+		string default_acl = user_name + ".* rwxpv\n%";
 
 		file_to_write << default_acl << endl;
 

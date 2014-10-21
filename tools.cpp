@@ -19,7 +19,6 @@ using std::istringstream;
 using std::cout;
 using namespace std;
 
-// static uid_t euid = 1003;
 static uid_t ruid = getuid();
 
  int change_permissions(string filename)
@@ -161,8 +160,6 @@ int validate_acl(string line){
 	return 0;
 }
 
-// ifstream, string username string groupname, string ops
-
 /** Checks to see if the ACL allows for user to access **/
 int check_acl(ifstream& file_to_open, 
 	string user_name, 
@@ -177,8 +174,6 @@ int check_acl(ifstream& file_to_open,
 		while (getline(file_to_open, line)){
 			if (line[0] == '%')
 				break;
-			cout << "gets into acl check" <<endl;
-			cout << line << endl;
 			string user_group, user, group, ops;
 
 			int delim_loc = line.find(' ');
@@ -191,16 +186,8 @@ int check_acl(ifstream& file_to_open,
 			user = user_group.substr(0, delim_loc);
 			group = user_group.erase(0, delim_loc + 1);
 
-			cout << user <<endl;
-			cout << group << endl;
-			cout << ops << endl;
-
-
 			if (user_name == user || user == "*"){
 				if(group_name == group || group == "*"){
-
-					// cout << "got down to access" << endl;
-
 
 					if(ops.find(access) >= 0 )
 						to_return = 1;
