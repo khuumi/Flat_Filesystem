@@ -9,6 +9,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <pwd.h>
+#include <algorithm>  
+#include <ctype.h>
 #include "tools.h"
 
 using std::ifstream;
@@ -24,7 +26,7 @@ static uid_t ruid = getuid();
  	const char *f_name = filename.c_str();
     int stat;
  
-    stat = chmod(f_name, "S_IRWXU");
+    stat = chmod(f_name, S_IRWXU);
     if (stat)
     	cerr << "Couldn't change permissions for file " <<f_name <<endl;
     else
@@ -84,8 +86,8 @@ string get_real_groupname(){
 
 	struct passwd *p;
 	
-	if ((p = getgrid(group_id)) == NULL )
-		cerr << "getgrid() error" << endl;
+	if ((p = getgrgid(group_id)) == NULL )
+		cerr << "getgrgid() error" << endl;
 	else 
 		return string(p->gr_name) ;
 
@@ -136,7 +138,7 @@ int validate_acl(string line){
 			return -1;
 
 		for (char &c : ops){
-			if (allowed_ops.find(c) == -1)
+			if (allowed_ops.find(c) < 0)
 				return -1;
 		}
 
@@ -180,7 +182,7 @@ int check_acl(ifstream& file_to_open,
 			if (user_name == user || user_name == "*"){
 				if(group_name == group || group == "*"){
 
-					if(ops.find(access) != -1 )
+					if(ops.find(access) > 0 )
 						to_return = 1;
 				}
 			}
