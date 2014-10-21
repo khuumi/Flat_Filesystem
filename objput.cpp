@@ -30,11 +30,11 @@ int main(int argc, char * argv[]){
 		exit(1);
 	}
 
-	string user_name = get_real_username();
-	string group_name = get_real_groupname();
+	// string user_name = get_real_username();
+	// string group_name = get_real_groupname();
 
-	// string user_name = "test";
-	// string group_name = "test";
+	string user_name = "test";
+	string group_name = "test";
 
 
 	string file_name = user_name + "-" + object_name;
