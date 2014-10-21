@@ -23,7 +23,7 @@ int main(int argc, char * argv[]){
 
 	}
 
-	if (argc = 2){
+	if (argc == 2){
 		string option = argv[1];
 
 		if (option == "-l")
