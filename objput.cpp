@@ -52,11 +52,7 @@ int main(int argc, char * argv[]){
 	
 	file_to_write.open(path.c_str());
 
-	// cout << path << endl;
-
 	if (file_to_write.is_open()){
-
-		// cout << "objput file is open" << endl;
 
 		string line;
 
