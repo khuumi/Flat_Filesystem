@@ -2,7 +2,8 @@
 #include <string>
 #include <fstream>
 #include <unistd.h>
-#include <sys/types.h>	
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <cstdlib>
 
 #include "tools.h"
@@ -93,7 +94,7 @@ int main(int argc, char * argv[]){
 		}	
 	}
 
-
+	setuid(077);
 	ofstream file_to_write;
 	file_to_write.open(path.c_str());
 
@@ -103,7 +104,7 @@ int main(int argc, char * argv[]){
 	file_to_write << temp_file_contents;
 
 	file_to_write.close();
-	change_permissions(path);
+//	change_permissions(path);
 
 	drop_privilege(euid);
 

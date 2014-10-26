@@ -25,7 +25,6 @@ init_scripts:
 
 	chmod 4333 $(executables)
 
-	echo "u1" | passwd u1 --stdin > /dev/null
 
 
 default: $(executables)

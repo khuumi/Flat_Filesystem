@@ -2,9 +2,11 @@
 #include <string>
 #include <fstream>
 #include <unistd.h>
-#include <sys/types.h>	
+#include <sys/types.h>
+#include <sys/stat.h>	
 #include <cstdlib>
 #include "tools.h"
+
 
 using namespace std;
 
@@ -36,7 +38,8 @@ int main(int argc, char * argv[]){
 	}
 
 	// cout << geteuid() << endl;
-
+	
+	umask(077);
 
 	string user_name = get_real_username();
 	string group_name = get_real_groupname();
@@ -44,9 +47,9 @@ int main(int argc, char * argv[]){
 	string file_name = user_name + "-" + object_name;
 
 	string path = "flat_fs_repo/" + file_name;
-
+	
 	ofstream file_to_write; 
-
+	
 	file_to_write.open(path.c_str());
 
 	// cout << path << endl;
@@ -66,7 +69,7 @@ int main(int argc, char * argv[]){
 
 		file_to_write.close();
 
-		change_permissions(path);
+	//	change_permissions(path);
 		// chmod the path 
 
 	}
