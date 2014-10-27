@@ -12,9 +12,23 @@ LDLIBS =
 executables = objput objget objlist objgetacl objsetacl objtestacl
 objects = objput.o objget.o objlist.o objgetacl.o objsetacl.o objtestacl.o tools.o
 
+.PHONY: default
+
+
+.PHONY: exec	 
+ifneq "$(strip $(userfile))" ""
 exec: build init_scripts
 
-.PHONY: default
+@echo init to $(userfile)
+#@#echo put your logic for initialization to $(userfile) here
+else
+userfile="usernames" 	
+exec: build init_scripts
+#@#echo put your default initialization logic here
+endif
+
+
+#exec: build init_scripts
 
 init_scripts:
 	- useradd flat_fs
