@@ -23,7 +23,7 @@ static uid_t ruid = getuid();
 
  int change_permissions(string filename)
  {
- 	const char *f_name = filename.c_str();
+    const char *f_name = filename.c_str();
     int stat;
  
     stat = chmod(f_name, S_IRWXU);
@@ -165,7 +165,7 @@ int check_acl(ifstream& file_to_open,
 
 	string line;
 
-	int to_return = 0;
+	int to_return = -1;
 
 	string ops = "rwxpv";
 
@@ -185,10 +185,16 @@ int check_acl(ifstream& file_to_open,
 			user = user_group.substr(0, delim_loc);
 			group = user_group.erase(0, delim_loc + 1);
 
-			if (user_name == user || user == "*"){
-				if(group_name == group || group == "*"){
-					if(ops.find(access) != string::npos )
-						to_return = 1;
+			if (to_return == -1)
+			{
+				if (user_name == user || user == "*"){
+					if(group_name == group || group == "*"){
+						if(ops.find(access) != string::npos )
+							to_return =  1;
+						else 
+							to_return =  0;
+					
+					}
 				}
 			}
 		}
