@@ -41,9 +41,10 @@ int main(int argc, char * argv[]){
 
 
 	string user_name = get_real_username();
+	string path_name = "flat_fs_repo";
 
 	struct dirent *dir;
-	DIR *d = opendir("flat_fs_repo");
+	DIR *d = opendir(path_name.c_str());
 	char delim = '-';
 
 	string result;
@@ -51,7 +52,10 @@ int main(int argc, char * argv[]){
 	if (d){
 		while ((dir = readdir(d)) != NULL){
 			struct stat st;
-			stat(dir->d_name, &st);
+			string file_path = path_name + "/" + dir->d_name;
+			if (stat(file_path.c_str(), &st) <0)
+				cerr << "Sory error calling stat" <<endl;
+		
 			int size = st.st_size;
 
 			string file_name = dir->d_name; 

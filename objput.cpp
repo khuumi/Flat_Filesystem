@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>	
 #include <cstdlib>
+#include <string.h>
 #include "tools.h"
 
 
@@ -48,9 +49,10 @@ int main(int argc, char * argv[]){
 
 	string path = "flat_fs_repo/" + file_name;
 	
+	remove(path.c_str());
 	ofstream file_to_write; 
 	
-	file_to_write.open(path.c_str());
+	file_to_write.open(path.c_str(), ios::out | ios::binary | ios::app);
 
 	if (file_to_write.is_open()){
 
@@ -60,13 +62,16 @@ int main(int argc, char * argv[]){
 
 		file_to_write << default_acl << endl;
 
-		while(getline(cin, line))
-			file_to_write << line <<endl;
+		char * buffer = new char[4096];
+		cin.read(buffer, 4096);
+	
+		while (cin.gcount()>0 ){	
+			file_to_write.write(buffer, cin.gcount());
+			cin.read(buffer, 4096);
+		}	
 
+		delete[] buffer;
 		file_to_write.close();
-
-	//	change_permissions(path);
-		// chmod the path 
 
 	}
 	drop_privilege(euid);

@@ -53,35 +53,34 @@ int main(int argc, char * argv[]){
 	string file_name = owner_name + "-" + object_name;
 	string path = "flat_fs_repo/" + file_name;
 
-	ifstream file_to_open;
-	file_to_open.open(path.c_str());
+	ifstream file_to_read;
+	file_to_read.open(path.c_str(), ios::in|ios::binary|ios::ate);
+	streampos size;
+	if (file_to_read.is_open())
+		size = file_to_read.tellg();
+
+	file_to_read.seekg(0, ios::beg);	
 
 	// Check for this specific type of permission
-	if (check_acl(file_to_open, user_name, group_name, "p") < 1){
+	if (check_acl(file_to_read, user_name, group_name, "p") < 1){
 		cerr << "Sorry you don't have permissions to set the ACL!!!" << endl;
 
 		exit(1);
 	}
-
-	string temp_file_contents = "";
-
-	/** First create a temp file to copy to **/
-	// fstream temp_file; 
-	// string path_to_temp = "flat_fs_repo/TEMP";
-	// temp_file.open(path_to_temp.c_str());
-
-	// copy (starting from after the ACL)
-	string line;
-	if (file_to_open.is_open()){
-		while(getline(file_to_open, line))  
-			temp_file_contents = temp_file_contents + line +"\n";
-	}
-
-	// cout <<"contents" << temp_file_contents << endl;
-
-	file_to_open.close();
-
+	
+	streampos acl_size = file_to_read.tellg();
+	size = size -acl_size;
+	
+	char * temp_file_contents = new char[size];
+	if (file_to_read.is_open())
+		file_to_read.read(temp_file_contents, size);
+ 
+	//write it to a file 
+	
+	file_to_read.close();
 	string acl_info = "";
+	
+	string line; 
 
 	//allow user input for the new ACL lines
 	while (getline(cin, line)){
@@ -101,7 +100,7 @@ int main(int argc, char * argv[]){
 	// all acl info passed validation
 	file_to_write << acl_info << "%" <<endl;
 
-	file_to_write << temp_file_contents;
+	file_to_write.write(temp_file_contents, size);
 
 	file_to_write.close();
 //	change_permissions(path);

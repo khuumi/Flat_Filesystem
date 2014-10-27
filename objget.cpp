@@ -22,7 +22,6 @@ int main(int argc, char * argv[]){
 
 	string object_name = argv[1];
 
-
 	//Usernames, group names, and object names can contain letters, digits, and
 	//underscores; no other characters are legal.
 
@@ -39,8 +38,6 @@ int main(int argc, char * argv[]){
 		exit(1);
 	}
 
-
-
 	string user_name = get_real_username();
 	string group_name = get_real_groupname();
 
@@ -56,24 +53,30 @@ int main(int argc, char * argv[]){
 
 	string path = "flat_fs_repo/" + file_name;
 
-
-	ifstream file_to_read;
-	file_to_read.open(path.c_str());
+	ifstream file_to_read (path.c_str(), ios::in|ios::binary);
 
 	if (check_acl(file_to_read, user_name, group_name, "r") < 1){
 		cerr << "Sorry you don't have permissions to see this file!!!" << endl;
 		exit(1);
-	}
+	}	
+	
 
-	string line;
+	char * buffer = new char[1024];
 
 	if (file_to_read.is_open()){
-		while (getline(file_to_read, line))
-			cout << line << "\n";
-
-		file_to_read.close();
+		file_to_read.read(buffer, 1024);
+		while(file_to_read.gcount()>0){
+			cout.write(buffer, file_to_read.gcount());
+			file_to_read.read(buffer, 1024);
+		}
 	}
 
+		
+	
+	file_to_read.close();
+		
+	delete[] buffer;
+	
 	drop_privilege(euid);
 
 }
