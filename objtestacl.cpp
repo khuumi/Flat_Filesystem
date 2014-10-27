@@ -20,17 +20,25 @@ int main(int argc, char * argv[]){
 			exit(1);
 	}
 
-	string access = argv[2];
-	string object_name = argv[3];
+	string access;
+	string object_name;
 
 	//Usernames, group names, and object names can contain letters, digits, and
 	//underscores; no other characters are legal.
 
-	if (sanitize_args(access, object_name) < 1){
+	if (sanitize_args(argv[2], argv[3]) > 0){
+		access = argv[2];
+		object_name = argv[3];	
+	}
+	else if (sanitize_args(argv[3], argv[1]) > 0 ) {
+		access = argv[3];
+		object_name = argv[1];
+	}
+	else {
 		cerr << "Sorry invalid input, please try again!" << endl;
 		exit(1);
 	}
-
+	
 	uid_t euid = get_uid("flat_fs");
 
 	// Set the egid to flat_fs's gid
@@ -71,7 +79,7 @@ int main(int argc, char * argv[]){
 }
 
 int sanitize_args(string access, string object_name){
-	if (access.find_first_not_of("pvrwxp") < 0)
+	if (access.find_first_not_of("pvrwx") <=0)
 		return -1;
 	else 
 		return sanitize(object_name, 0);
