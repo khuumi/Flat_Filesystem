@@ -1,5 +1,7 @@
 Flat FileSystem written in C++
 ==============
+Password for tinyvm = hogbacon
+Password for user = eatbacon
 
 Security Architecture and Engineering Homework 2
 

@@ -50,4 +50,6 @@ clean:
 .PHONY: all
 all: clean default
 
-
+.PHONY: test
+test: exec
+	./test1.sh
