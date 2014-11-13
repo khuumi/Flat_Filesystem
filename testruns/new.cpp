@@ -21,6 +21,8 @@ int decrypt( char *ciphertext, int ciphertext_len, char *key,
 
   int plaintext_len;
 
+  char * pt = plaintext + len;
+
   /* Create and initialise the context */
   if(!(ctx = EVP_CIPHER_CTX_new())) handleErrors();
 
@@ -42,7 +44,7 @@ int decrypt( char *ciphertext, int ciphertext_len, char *key,
   /* Finalise the decryption. Further plaintext bytes may be written at
    * this stage.
    */
-  if(1 != EVP_DecryptFinal_ex(ctx, reinterpret_cast<const unsigned char *>(&(plaintext + len)), &len)) handleErrors();
+  if(1 != EVP_DecryptFinal_ex(ctx, reinterpret_cast<const unsigned char *>(&pt), &len)) handleErrors();
   plaintext_len += len;
 
   /* Clean up */
@@ -61,6 +63,9 @@ int encrypt(char *plaintext, int plaintext_len,char *key,
   int len;
 
   int ciphertext_len;
+
+
+  char * pt = plaintext + len;
 
   /* Create and initialise the context */
   if(!(ctx = EVP_CIPHER_CTX_new())) handleErrors();
@@ -83,7 +88,7 @@ int encrypt(char *plaintext, int plaintext_len,char *key,
   /* Finalise the encryption. Further ciphertext bytes may be written at
    * this stage.
    */
-  if(1 != EVP_EncryptFinal_ex(ctx, reinterpret_cast<const unsigned char *>(&(plaintext + len)), &len)) handleErrors();
+  if(1 != EVP_EncryptFinal_ex(ctx, reinterpret_cast<const unsigned char *>(&pt), &len)) handleErrors();
   ciphertext_len += len;
 
   /* Clean up */
