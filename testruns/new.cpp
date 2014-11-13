@@ -2,7 +2,8 @@
 #include <openssl/evp.h>
 #include <openssl/err.h>
 #include <string.h>
-
+#include <string>
+#include <cstring>
 
 void handleErrors(void)
 {
@@ -105,14 +106,16 @@ int main(int arc, char *argv[])
    */
 
   /* A 256 bit key */
-  char *key = "01234567890123456789012345678901".c_str();
+  string k = "01234567890123456789012345678901";
+  char * key = k.c_str();
 
   /* A 128 bit IV */
-  char *iv = "01234567890123456".c_str();
-
+  string i = "01234567890123456";
+  char * iv = i.c_str();
   /* Message to be encrypted */
-  char *plaintext =
-    "The quick brown fox jumps over the lazy dog".c_str();
+  string p =
+    "The quick brown fox jumps over the lazy dog";
+    char * plaintext = p.c_str();
 
   /* Buffer for ciphertext. Ensure the buffer is long enough for the
    * ciphertext which may be longer than the plaintext, dependant on the
