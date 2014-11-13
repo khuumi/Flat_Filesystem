@@ -36,11 +36,11 @@ int main(int argc, char * argv[]){
 	string object_name;
 
 	// The -k can come in any order
-	if (argv[1].compare("-k")){
+	if (string(argv[1]).compare("-k")){
 		pass_phrase = argv[2];
 		object_name = argv[3];
 	}
-	else if( argv[2].compare("-k")){
+	else if(string(argv[2]).compare("-k")){
 		pass_phrase = argv[3];
 		object_name = argv[1];
 	}
@@ -74,9 +74,9 @@ int main(int argc, char * argv[]){
 	// http://www.askyb.com/cpp/openssl-md5-hashing-example-in-cpp/
 
 	unsigned char md5_digest[MD5_DIGEST_LENGTH];
-	char * pass_char = pass_phrase.c_str();
+	const char * pass_char = pass_phrase.c_str();
 
-	MD5((unsigned char *)&pass_char, strlen(pass_char), (unsigned char *)&digest);
+	MD5((unsigned char *)&pass_char, strlen(pass_char), (unsigned char *)&md5_digest);
 	char md5_result[33];
 
    	for(int i = 0; i < 16; i++)
