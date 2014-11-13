@@ -40,7 +40,7 @@ init_scripts:
 	chmod 4333 $(executables)
 
 
-default: $(executables) crypto
+default: crypto $(executables) 
 
 $(executables): tools.o crypto.o
 $(objects): tools.h crypto.h
