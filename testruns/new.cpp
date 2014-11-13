@@ -5,6 +5,9 @@
 #include <string>
 #include <cstring>
 
+using namespace std;
+
+
 void handleErrors(void)
 {
   ERR_print_errors_fp(stderr);
@@ -113,9 +116,8 @@ int main(int arc, char *argv[])
   string i = "01234567890123456";
   char * iv = i.c_str();
   /* Message to be encrypted */
-  string p =
-    "The quick brown fox jumps over the lazy dog";
-    char * plaintext = p.c_str();
+  string p = "The quick brown fox jumps over the lazy dog";
+  char * plaintext = p.c_str();
 
   /* Buffer for ciphertext. Ensure the buffer is long enough for the
    * ciphertext which may be longer than the plaintext, dependant on the
