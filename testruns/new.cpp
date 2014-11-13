@@ -44,7 +44,7 @@ int decrypt( char *ciphertext, int ciphertext_len, char *key,
   /* Finalise the decryption. Further plaintext bytes may be written at
    * this stage.
    */
-  if(1 != EVP_DecryptFinal_ex(ctx, reinterpret_cast<const unsigned char *>(&pt), &len)) handleErrors();
+  if(1 != EVP_DecryptFinal_ex(ctx, reinterpret_cast<unsigned char *>(&pt), &len)) handleErrors();
   plaintext_len += len;
 
   /* Clean up */
@@ -88,7 +88,7 @@ int encrypt(char *plaintext, int plaintext_len,char *key,
   /* Finalise the encryption. Further ciphertext bytes may be written at
    * this stage.
    */
-  if(1 != EVP_EncryptFinal_ex(ctx, reinterpret_cast<const unsigned char *>(&pt), &len)) handleErrors();
+  if(1 != EVP_EncryptFinal_ex(ctx, reinterpret_cast<unsigned char *>(&pt), &len)) handleErrors();
   ciphertext_len += len;
 
   /* Clean up */
@@ -105,14 +105,14 @@ int main(int arc, char *argv[])
    */
 
   /* A 256 bit key */
-  char *key = "01234567890123456789012345678901";
+  char *key = "01234567890123456789012345678901".c_str();
 
   /* A 128 bit IV */
-  char *iv = "01234567890123456";
+  char *iv = "01234567890123456".c_str();
 
   /* Message to be encrypted */
   char *plaintext =
-    "The quick brown fox jumps over the lazy dog";
+    "The quick brown fox jumps over the lazy dog".c_str();
 
   /* Buffer for ciphertext. Ensure the buffer is long enough for the
    * ciphertext which may be longer than the plaintext, dependant on the
