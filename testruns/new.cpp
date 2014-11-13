@@ -35,7 +35,7 @@ int decrypt( char *ciphertext, int ciphertext_len, char *key,
   /* Provide the message to be decrypted, and obtain the plaintext output.
    * EVP_DecryptUpdate can be called multiple times if necessary
    */
-  if(1 != EVP_DecryptUpdate(ctx, reinterpret_cast<const unsigned char *>(&plaintext), &len, reinterpret_cast<const unsigned char*> (&ciphertext), ciphertext_len))
+  if(1 != EVP_DecryptUpdate(ctx, reinterpret_cast<unsigned char *>(&plaintext), &len, reinterpret_cast<const unsigned char*> (&ciphertext), ciphertext_len))
     handleErrors();
   plaintext_len = len;
 
@@ -76,7 +76,7 @@ int encrypt(char *plaintext, int plaintext_len,char *key,
   /* Provide the message to be encrypted, and obtain the encrypted output.
    * EVP_EncryptUpdate can be called multiple times if necessary
    */
-  if(1 != EVP_EncryptUpdate(ctx,reinterpret_cast<const unsigned char *>(&ciphertext), &len, reinterpret_cast<const unsigned char *>(&plaintext), plaintext_len))
+  if(1 != EVP_EncryptUpdate(ctx,reinterpret_cast<unsigned char *>(&ciphertext), &len, reinterpret_cast<const unsigned char *>(&plaintext), plaintext_len))
     handleErrors();
   ciphertext_len = len;
 
