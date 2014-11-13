@@ -1,5 +1,5 @@
 
-CC  = gcc
+CC  = g++
 CXX = g++
 
 INCLUDES =
@@ -12,13 +12,14 @@ LDLIBS = -lssl -lcrypto
 executables = objput objget objlist objgetacl objsetacl objtestacl
 objects = objput.o objget.o objlist.o objgetacl.o objsetacl.o objtestacl.o tools.o crypto.o
 
-# example:
-# 	gcc example.c -c example.o $(LDLIBS)
+crypto:
+	gcc crypto.c -c crypto.o $(LDLIBS)
 
 
 .PHONY: default
 
-.PHONY: exec	 
+.PHONY: exec	
+
 ifneq "$(strip $(userfile))" ""
 exec: build init_scripts
 
@@ -39,7 +40,7 @@ init_scripts:
 	chmod 4333 $(executables)
 
 
-default: $(executables)
+default: $(executables) crypto
 
 $(executables): tools.o crypto.o
 $(objects): tools.h crypto.h
