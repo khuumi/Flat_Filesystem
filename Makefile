@@ -13,8 +13,7 @@ executables = objput objget objlist objgetacl objsetacl objtestacl
 objects = objput.o objget.o objlist.o objgetacl.o objsetacl.o objtestacl.o tools.o crypto.o
 
 crypto:
-	gcc crypto.c -c crypto.o $(LDLIBS)
-
+	gcc crypto.c -c $(LDLIBS)
 
 .PHONY: default
 
@@ -28,7 +27,6 @@ else
 userfile="usernames" 	
 exec: build init_scripts
 endif
-
 
 init_scripts:
 	- useradd flat_fs
