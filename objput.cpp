@@ -99,10 +99,16 @@ int main(int argc, char * argv[]){
 
 	dev_urandom.open("/dev/urandom");
 	char * iv = new char[16];
+	char * key = new char[16];
 
-	if (dev_urandom.is_open())
+
+	if (dev_urandom.is_open()){
 		dev_urandom.read(iv, 16);
+		dev_urandom.read(key, 16);
+	}	
+	
 
+	
 	//after we get the IV, get a pseudorandom key 
 	//encrypt key with pass
 	// store encyrpted key along with IV and all those stuff
