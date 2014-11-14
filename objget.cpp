@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <sys/types.h>  
 #include "tools.h"
+#include <string.h>
+
 
 #include <openssl/conf.h>
 #include <openssl/evp.h>
@@ -56,7 +58,7 @@ int main(int argc, char * argv[]){
         cerr << "Sorry invalid input, please try again!" << endl;
         exit(1);
     }
-    
+
     // Generate the MD5 sum of the pass_phrase
     // http://www.askyb.com/cpp/openssl-md5-hashing-example-in-cpp/
 
@@ -118,7 +120,7 @@ int main(int argc, char * argv[]){
 
         if (aes_decrypt((unsigned char *) encrypted_key, 32, 
                         (unsigned char *) md5_result, 
-                        (unsigned char *) iv, (unsigned char *) key ) =! 32){
+                        (unsigned char *) iv, (unsigned char *) key ) != 32){
             cerr << "Sorry decryption failed" <<endl;
             exit(1);
         }
@@ -141,7 +143,7 @@ int main(int argc, char * argv[]){
                 exit(1);
             }
 
-            text[file_to_read.gcount()] = "\0";
+            text[file_to_read.gcount()] = '\0';
 
             cout.write(buffer, file_to_read.gcount());
             file_to_read.read(buffer, 1024);
