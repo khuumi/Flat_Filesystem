@@ -140,7 +140,7 @@ int main(int argc, char * argv[]){
 			int size_of_cipher = (cin.gcount() % 16) + cin.gcount();
 			unsigned char ciphertext[size_of_cipher];
 
-			int size_of_result = aes_encrypt(buffer, 
+			int size_of_result = aes_encrypt((unsigned char *) buffer, 
 											cin.gcount(), 
 											(unsigned char *) md5_result,
 											(unsigned char *) iv, 
