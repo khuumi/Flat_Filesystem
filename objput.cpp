@@ -152,12 +152,10 @@ int main(int argc, char * argv[]){
 				exit(1);
 			}
 
-
-			file_to_write.write(ciphertext, size_of_result);
+			file_to_write.write((const char *)ciphertext, size_of_result);
 			cin.read(buffer, 4096);
 			}
-			}
-		}	
+	}	
 
 		delete[] buffer;
 		file_to_write.close();
