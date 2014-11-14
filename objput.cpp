@@ -14,7 +14,7 @@
 #include <openssl/md5.h>
 
 extern "C" {
-	#include "crypto.h"
+#include "crypto.h"
 }
 
 using namespace std;
@@ -27,7 +27,7 @@ int main(int argc, char * argv[]){
 			<<  " <objectname>" 
 			<< " -k passphrase"
 			<< endl;
-			exit(1);
+		exit(1);
 	}
 
 	string pass_phrase;
@@ -48,7 +48,6 @@ int main(int argc, char * argv[]){
 			<<  " <objectname>" 
 			<< " -k passphrase"
 			<< endl;
-			exit(1);
 		exit(1);
 	}
 
@@ -77,13 +76,13 @@ int main(int argc, char * argv[]){
 	MD5((unsigned char *)pass_char, strlen(pass_char), (unsigned char *)&md5_digest);
 	char md5_result[33];
 
-   	for(int i = 0; i < 16; i++)
-        sprintf(&md5_result[i*2], "%02x", (unsigned int)md5_digest[i]);
- 
-    printf("md5 digest: %s\n", md5_result);
-         
+	for(int i = 0; i < 16; i++)
+		sprintf(&md5_result[i*2], "%02x", (unsigned int)md5_digest[i]);
+
+	printf("md5 digest: %s\n", md5_result);
+
 	// cout << geteuid() << endl;
-	
+
 	umask(077);
 
 	string user_name = get_real_username();
@@ -92,34 +91,45 @@ int main(int argc, char * argv[]){
 	string file_name = user_name + "-" + object_name;
 
 	string path = "flat_fs_repo/" + file_name;
+
+
+	// Get the random IV
+
+	ifstream dev_urandom;
+
+	dev_urandom.open("/dev/urandom");
+	char * iv = new char[16];
+
+	if (dev_urandom.is_open())
+		dev_urandom.read(iv, 16);
+
+	//after we get the IV, get a pseudorandom key 
+	//encrypt key with pass
+	// store encyrpted key along with IV and all those stuff
+
+	//when you objget you pull what should be the encrypted key and the
+
 	
 
-    // Get the random IV
 
-    ifstream dev_urandom;
+	
 
-    dev_urandom.open("/dev/urandom");
-    char * iv = new char[16];
-
- 	if (dev_urandom.is_open())
-    	dev_urandom.read(iv, 16);
-
-    cerr << iv << endl;
+	cerr << iv << endl;
 
 
-  	// /* Initialise the Cyrpto library */
-	  // ERR_load_crypto_strings();
-	  // OpenSSL_add_all_algorithms();
-	  // OPENSSL_config(NULL);
+	// /* Initialise the Cyrpto library */
+	// ERR_load_crypto_strings();
+	// OpenSSL_add_all_algorithms();
+	// OPENSSL_config(NULL);
 
 
-    // key, iv, message
+	// key, iv, message
 
 	//initialize cyrpto junk
 
 	remove(path.c_str());
 	ofstream file_to_write; 
-	
+
 	file_to_write.open(path.c_str(), ios::out | ios::binary | ios::app);
 
 	if (file_to_write.is_open()){
@@ -130,22 +140,21 @@ int main(int argc, char * argv[]){
 
 		file_to_write << default_acl << endl;
 
-		file_to_write << iv;
+		file_to_write.write(iv, 16);
 
 		char * buffer = new char[4096];
 		cin.read(buffer, 4096);
-	
-		while (cin.gcount()>0 ){
 
-			int size_of_cipher = (cin.gcount() % 16) + cin.gcount();
+		while (cin.gcount() > 0){
+			int size_of_cipher = cin.gcount() + ((16 - cin.gcount()) % 16) +16;
 			unsigned char ciphertext[size_of_cipher];
 
 			int size_of_result = aes_encrypt((unsigned char *) buffer, 
-											cin.gcount(), 
-											(unsigned char *) md5_result,
-											(unsigned char *) iv, 
-											ciphertext);
-
+					cin.gcount(), 
+					(unsigned char *) md5_result,
+					(unsigned char *) iv, 
+					ciphertext);
+			cout << size_of_result << " " << size_of_cipher << endl;
 
 			if (size_of_cipher != size_of_result){
 				cerr << "Encryption is not working " <<endl;
@@ -160,7 +169,7 @@ int main(int argc, char * argv[]){
 		file_to_write.close();
 	}	
 
-	
+
 	drop_privilege(euid);
 
 }

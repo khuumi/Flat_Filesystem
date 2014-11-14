@@ -6,21 +6,49 @@
 #include <sys/types.h>	
 #include "tools.h"
 
-using namespace std;
+#include <openssl/conf.h>
+#include <openssl/evp.h>
+#include <openssl/err.h>
+#include <openssl/md5.h>
 
+extern "C" {
+#include "crypto.h"
+}
+
+using namespace std;
 
 int main(int argc, char * argv[]){
 
-	if (argc < 2) {
+	if (argc < 4) {
 		cerr << "Usage:" 
 			<< argv[0] 
 			<<  " <objectname>" 
+			<< " -k passphrase"
 			<< endl;
-			exit(1);
-
+		exit(1);
 	}
 
-	string object_name = argv[1];
+	string pass_phrase;
+	string object_name;
+
+	// The -k can come in any order
+	if (string(argv[1]).compare("-k") == 0 ){
+		pass_phrase = argv[2];
+		object_name = argv[3];
+	}
+	else if(string(argv[2]).compare("-k") == 0 ){
+		pass_phrase = argv[3];
+		object_name = argv[1];
+	}
+	else{
+		cerr << "Usage:" 
+			<< argv[0] 
+			<<  " <objectname>" 
+			<< " -k passphrase"
+			<< endl;
+		exit(1);
+	}
+
 
 	//Usernames, group names, and object names can contain letters, digits, and
 	//underscores; no other characters are legal.
@@ -59,8 +87,26 @@ int main(int argc, char * argv[]){
 		cerr << "Sorry you don't have permissions to see this file!!!" << endl;
 		exit(1);
 	}	
-	
 
+
+	// Generate the MD5 sum of the pass_phrase
+	// http://www.askyb.com/cpp/openssl-md5-hashing-example-in-cpp/
+
+	unsigned char md5_digest[MD5_DIGEST_LENGTH];
+	const char * pass_char = pass_phrase.c_str();
+
+	MD5((unsigned char *)pass_char, strlen(pass_char), (unsigned char *)&md5_digest);
+	char md5_result[33];
+
+	for(int i = 0; i < 16; i++)
+		sprintf(&md5_result[i*2], "%02x", (unsigned int)md5_digest[i]);
+
+	printf("md5 digest: %s\n", md5_result);
+
+	//read in 16 bytes -- this is the IV
+
+	//then 
+	
 	char * buffer = new char[1024];
 
 	if (file_to_read.is_open()){
@@ -71,12 +117,12 @@ int main(int argc, char * argv[]){
 		}
 	}
 
-		
-	
+
+
 	file_to_read.close();
-		
+
 	delete[] buffer;
-	
+
 	drop_privilege(euid);
 
 }
