@@ -74,15 +74,14 @@ int main(int argc, char * argv[]){
 	unsigned char md5_digest[MD5_DIGEST_LENGTH];
 	const char * pass_char = pass_phrase.c_str();
 
-	MD5((unsigned char *)&pass_char, strlen(pass_char), (unsigned char *)&md5_digest);
+	MD5((unsigned char *)pass_char, strlen(pass_char), (unsigned char *)&md5_digest);
 	char md5_result[33];
 
    	for(int i = 0; i < 16; i++)
         sprintf(&md5_result[i*2], "%02x", (unsigned int)md5_digest[i]);
  
     printf("md5 digest: %s\n", md5_result);
-
-
+         
 	// cout << geteuid() << endl;
 	
 	umask(077);
@@ -95,10 +94,23 @@ int main(int argc, char * argv[]){
 	string path = "flat_fs_repo/" + file_name;
 	
 
-	// get 16 bytes from /dev/urandom 
 
-	// generate a pseudo random number 
-	//get random key
+
+    // Get the random IV
+
+    ifstream dev_urandom;
+
+    dev_urandom.open("/dev/urandom");
+    char * iv = new char[16];
+
+ 	if (dev_urandom.is_open())
+    	dev_urandom.read(iv, 16);
+
+    cerr << iv << endl;
+
+
+
+    
 	//initialize cyrpto junk
 
 	remove(path.c_str());
