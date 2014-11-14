@@ -13,11 +13,9 @@
 #include <openssl/err.h>
 #include <openssl/md5.h>
 
-
 extern "C" {
 	#include "crypto.h"
 }
-
 
 using namespace std;
 
@@ -99,12 +97,9 @@ int main(int argc, char * argv[]){
 
 	// get 16 bytes from /dev/urandom 
 
-
-
 	// generate a pseudo random number 
 	//get random key
 	//initialize cyrpto junk
-
 
 	remove(path.c_str());
 	ofstream file_to_write; 
