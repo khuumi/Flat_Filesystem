@@ -94,8 +94,6 @@ int main(int argc, char * argv[]){
 	string path = "flat_fs_repo/" + file_name;
 	
 
-
-
     // Get the random IV
 
     ifstream dev_urandom;
@@ -109,8 +107,14 @@ int main(int argc, char * argv[]){
     cerr << iv << endl;
 
 
+  	// /* Initialise the Cyrpto library */
+	  // ERR_load_crypto_strings();
+	  // OpenSSL_add_all_algorithms();
+	  // OPENSSL_config(NULL);
 
-    
+
+    // key, iv, message
+
 	//initialize cyrpto junk
 
 	remove(path.c_str());
@@ -126,12 +130,33 @@ int main(int argc, char * argv[]){
 
 		file_to_write << default_acl << endl;
 
+		file_to_write << iv;
+
 		char * buffer = new char[4096];
 		cin.read(buffer, 4096);
 	
-		while (cin.gcount()>0 ){	
-			file_to_write.write(buffer, cin.gcount());
+		while (cin.gcount()>0 ){
+
+			int size_of_cipher = (cin.gcount() % 16) + cin.gcount();
+			unsigned char ciphertext[size_of_cipher];
+
+			int size_of_result = aes_encrypt(buffer, 
+											cin.gcount(), 
+											(unsigned char *) md5_result,
+											(unsigned char *) iv, 
+											&ciphertext);
+
+
+			if (size_of_cipher != size_of_result){
+				cerr << "Encryption is not working " <<endl;
+				exit(1);
+			}
+
+
+			file_to_write.write(ciphertext, size_of_result);
 			cin.read(buffer, 4096);
+			}
+			}
 		}	
 
 		delete[] buffer;
