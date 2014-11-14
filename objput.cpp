@@ -36,11 +36,11 @@ int main(int argc, char * argv[]){
 	string object_name;
 
 	// The -k can come in any order
-	if (string(argv[1]).compare("-k")){
+	if (string(argv[1]).compare("-k") == 0 ){
 		pass_phrase = argv[2];
 		object_name = argv[3];
 	}
-	else if(string(argv[2]).compare("-k")){
+	else if(string(argv[2]).compare("-k") == 0 ){
 		pass_phrase = argv[3];
 		object_name = argv[1];
 	}
@@ -96,6 +96,9 @@ int main(int argc, char * argv[]){
 
 	string path = "flat_fs_repo/" + file_name;
 	
+
+	// get 16 bytes from /dev/urandom 
+
 
 
 	// generate a pseudo random number 
