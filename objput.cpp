@@ -144,7 +144,7 @@ int main(int argc, char * argv[]){
 											cin.gcount(), 
 											(unsigned char *) md5_result,
 											(unsigned char *) iv, 
-											(unsigned char *) &ciphertext);
+											ciphertext);
 
 
 			if (size_of_cipher != size_of_result){
@@ -154,15 +154,13 @@ int main(int argc, char * argv[]){
 
 			file_to_write.write((const char *)ciphertext, size_of_result);
 			cin.read(buffer, 4096);
-			}
+		}
 
-			delete[] buffer;
+		delete[] buffer;
 		file_to_write.close();
 	}	
 
-		
-
-	}
+	
 	drop_privilege(euid);
 
 }
