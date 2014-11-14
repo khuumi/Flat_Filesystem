@@ -155,7 +155,7 @@ int main(int argc, char * argv[]){
         file_to_write << default_acl << endl;
 
         file_to_write.write(iv, 16);
-        file_to_write.write(encrypted_key, 16);
+        file_to_write.write((const char *)encrypted_key, 16);
 
         char * buffer = new char[4096];
         cin.read(buffer, 4096);
