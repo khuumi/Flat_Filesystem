@@ -115,7 +115,7 @@ int main(int argc, char * argv[]){
                     (unsigned char *) iv, 
                     encrypted_key)
     
-    cerr << returned_size << "  " << 16; 
+    cerr << returned_size << "  " << 16 << endl; 
 
     //iv
     //encyrpted_key
