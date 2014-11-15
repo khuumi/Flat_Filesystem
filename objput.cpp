@@ -113,7 +113,7 @@ int main(int argc, char * argv[]){
     int returned_size = aes_encrypt((unsigned char *) key, 16, 
                     (unsigned char *) md5_result,
                     (unsigned char *) iv, 
-                    encrypted_key)
+                    encrypted_key);
     
     cerr << returned_size << "  " << 16 << endl; 
 
@@ -165,13 +165,14 @@ int main(int argc, char * argv[]){
             int size_of_cipher = cin.gcount() + ((16 - cin.gcount()) % 16) +16;
             unsigned char ciphertext[size_of_cipher];
 
-            if (aes_encrypt((unsigned char *) buffer, 
+            if (int returned = aes_encrypt((unsigned char *) buffer, 
                     cin.gcount(), 
                     (unsigned char *) encrypted_key,
                     (unsigned char *) iv, 
                     ciphertext) != size_of_cipher)
             {
                 cerr << "Encryption is not working " <<endl;
+                cerr << returned << "  " < size_of_cipher << endl;
                 exit(1);
             }    
 
