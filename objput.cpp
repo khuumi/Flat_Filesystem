@@ -6,6 +6,7 @@
 #include <sys/stat.h>   
 #include <cstdlib>
 #include <string.h>
+
 #include "tools.h"
 
 #include <openssl/conf.h>
@@ -105,16 +106,16 @@ int main(int argc, char * argv[]){
 
     //encrypt key with pass -- SIZE + padding of SIZE
     unsigned char encrypted_key[32];
+    // int size_of_cipher = 16 + ((16 - cin.gcount()) % 16) +16;
 
-    if(aes_encrypt((unsigned char *) key, 16, 
+
+
+    int returned_size = aes_encrypt((unsigned char *) key, 16, 
                     (unsigned char *) md5_result,
                     (unsigned char *) iv, 
-                    encrypted_key) != 16)
-    {
-        cerr << "Encrypting the key is not working " <<endl;
-        exit(1);
-    }
-        
+                    encrypted_key)
+    
+    cerr << returned_size << "  " << 16; 
 
     //iv
     //encyrpted_key
