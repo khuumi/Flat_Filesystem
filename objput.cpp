@@ -172,7 +172,7 @@ int main(int argc, char * argv[]){
                     ciphertext) != size_of_cipher)
             {
                 cerr << "Encryption is not working " <<endl;
-                cerr << returned << "  " < size_of_cipher << endl;
+                cerr << returned << "  " << size_of_cipher << endl;
                 exit(1);
             }    
 
