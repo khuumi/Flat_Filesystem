@@ -159,13 +159,16 @@ int main(int argc, char * argv[]){
 
         while (cin.gcount() > 0){
             int size_of_cipher = cin.gcount() + ((16 - cin.gcount()) % 16) +16;
+            //TODO -- do the math correctly for size_of_cipher
+            // int size_of_cipher = 
+
             unsigned char ciphertext[size_of_cipher];
 
-            if (int returned = aes_encrypt((unsigned char *) buffer, 
+            if ((int returned = aes_encrypt((unsigned char *) buffer, 
                     cin.gcount(), 
                     (unsigned char *) encrypted_key,
                     (unsigned char *) iv, 
-                    ciphertext) != size_of_cipher)
+                    ciphertext)) != size_of_cipher)
             {
                 cerr << "Encryption is not working " <<endl;
                 cerr << returned << "  " << size_of_cipher << endl;
