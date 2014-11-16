@@ -115,7 +115,7 @@ int main(int argc, char * argv[]){
                     (unsigned char *) iv, 
                     encrypted_key);
     
-    cerr << returned_size << "  " << 16 << endl; 
+    cerr << returned_size << "  " << 32 << endl; 
 
     //iv
     //encyrpted_key
@@ -156,7 +156,7 @@ int main(int argc, char * argv[]){
         file_to_write << default_acl << endl;
 
         file_to_write.write(iv, 16);
-        file_to_write.write((const char *)encrypted_key, 16);
+        file_to_write.write((const char *)encrypted_key, 32);
 
         char * buffer = new char[4096];
         cin.read(buffer, 4096);
@@ -173,6 +173,10 @@ int main(int argc, char * argv[]){
             {
                 cerr << "Encryption is not working " <<endl;
                 cerr << returned << "  " << size_of_cipher << endl;
+
+                cerr << ciphertext << "\n\n" << endl;
+                cerr << buffer << endl;
+
                 exit(1);
             }    
 

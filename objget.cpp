@@ -8,6 +8,7 @@
 #include <string.h>
 
 
+
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
@@ -124,6 +125,8 @@ int main(int argc, char * argv[]){
             cerr << "Sorry decryption failed" <<endl;
             exit(1);
         }
+
+        cerr << "got this far" << endl;
 
 
         char * buffer = new char[1024];
