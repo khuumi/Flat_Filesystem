@@ -108,8 +108,6 @@ int main(int argc, char * argv[]){
     unsigned char encrypted_key[32];
     // int size_of_cipher = 16 + ((16 - cin.gcount()) % 16) +16;
 
-
-
     int returned_size = aes_encrypt((unsigned char *) key, 16, 
                     (unsigned char *) md5_result,
                     (unsigned char *) iv, 
@@ -131,12 +129,10 @@ int main(int argc, char * argv[]){
 
     // cerr << iv << endl;
 
-
     // /* Initialise the Cyrpto library */
     // ERR_load_crypto_strings();
     // OpenSSL_add_all_algorithms();
     // OPENSSL_config(NULL);
-
 
     // key, iv, message
 
@@ -174,6 +170,8 @@ int main(int argc, char * argv[]){
                 cerr << "Encryption is not working " <<endl;
                 cerr << returned << "  " << size_of_cipher << endl;
 
+                cerr << cin.gcount() << "cin gcount" << endl;
+ 
                 cerr << ciphertext << "\n\n" << endl;
                 cerr << buffer << endl;
 
