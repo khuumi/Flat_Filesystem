@@ -158,13 +158,14 @@ int main(int argc, char * argv[]){
         cin.read(buffer, 4096);
 
         while (cin.gcount() > 0){
-            int size_of_cipher = cin.gcount() + ((16 - cin.gcount()) % 16) +16;
+            int size_of_cipher = cin.gcount() + ((16 - cin.gcount()) % 16);
             //TODO -- do the math correctly for size_of_cipher
             // int size_of_cipher = 
 
             unsigned char ciphertext[size_of_cipher];
-
-            if ((int returned = aes_encrypt((unsigned char *) buffer, 
+	
+            int returned; 
+            if ((returned = aes_encrypt((unsigned char *) buffer, 
                     cin.gcount(), 
                     (unsigned char *) encrypted_key,
                     (unsigned char *) iv, 
