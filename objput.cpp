@@ -22,177 +22,141 @@ using namespace std;
 
 int main(int argc, char * argv[]){
 
-    if (argc < 4) {
-        cerr << "Usage:" 
-            << argv[0] 
-            <<  " <objectname>" 
-            << " -k passphrase"
-            << endl;
-        exit(1);
-    }
+	if (argc < 4) {
+		cerr << "Usage:" 
+			<< argv[0] 
+			<<  " <objectname>" 
+			<< " -k passphrase"
+			<< endl;
+		exit(1);
+	}
 
-    string pass_phrase;
-    string object_name;
+	string pass_phrase;
+	string object_name;
 
-    // The -k can come in any order
-    if (string(argv[1]).compare("-k") == 0 ){
-        pass_phrase = argv[2];
-        object_name = argv[3];
-    }
-    else if(string(argv[2]).compare("-k") == 0 ){
-        pass_phrase = argv[3];
-        object_name = argv[1];
-    }
-    else{
-        cerr << "Usage:" 
-            << argv[0] 
-            <<  " <objectname>" 
-            << " -k passphrase"
-            << endl;
-        exit(1);
-    }
+	// The -k can come in any order
+	if (string(argv[1]).compare("-k") == 0 ){
+		pass_phrase = argv[2];
+		object_name = argv[3];
+	}
+	else if(string(argv[2]).compare("-k") == 0 ){
+		pass_phrase = argv[3];
+		object_name = argv[1];
+	}
+	else{
+		cerr << "Usage:" 
+			<< argv[0] 
+			<<  " <objectname>" 
+			<< " -k passphrase"
+			<< endl;
+		exit(1);
+	}
 
-    //Usernames, group names, and object names can contain letters, digits, and
-    //underscores; no other characters are legal.
+	//Usernames, group names, and object names can contain letters, digits, and
+	//underscores; no other characters are legal.
 
-    if (sanitize(object_name, 1) < 1){
-        cerr << "Sorry invalid input, please try again!" << endl;
-        exit(1);
-    }
+	if (sanitize(object_name, 1) < 1){
+		cerr << "Sorry invalid input, please try again!" << endl;
+		exit(1);
+	}
 
-    uid_t euid = get_uid("flat_fs");
+	uid_t euid = get_uid("flat_fs");
 
-    // Set the egid to flat_fs's gid
-    if(raise_privilege(euid) < 0 ){
-        cerr << "Sorry there was an error accessing the repository" << endl;
-        exit(1);
-    }
+	// Set the egid to flat_fs's gid
+	if(raise_privilege(euid) < 0 ){
+		cerr << "Sorry there was an error accessing the repository" << endl;
+		exit(1);
+	}
 
-    // Generate the MD5 sum of the pass_phrase
-    // http://www.askyb.com/cpp/openssl-md5-hashing-example-in-cpp/
+	// Generate the MD5 sum of the pass_phrase
+	// http://www.askyb.com/cpp/openssl-md5-hashing-example-in-cpp/
 
-    unsigned char md5_digest[MD5_DIGEST_LENGTH];
-    const char * pass_char = pass_phrase.c_str();
+	unsigned char md5_digest[MD5_DIGEST_LENGTH];
+	const char * pass_char = pass_phrase.c_str();
 
-    MD5((unsigned char *)pass_char, strlen(pass_char), (unsigned char *)&md5_digest);
-    char md5_result[33];
+	MD5((unsigned char *)pass_char, strlen(pass_char), (unsigned char *)&md5_digest);
+	char md5_result[33];
 
-    for(int i = 0; i < 16; i++)
-        sprintf(&md5_result[i*2], "%02x", (unsigned int)md5_digest[i]);
+	for(int i = 0; i < 16; i++)
+		sprintf(&md5_result[i*2], "%02x", (unsigned int)md5_digest[i]);
 
-    printf("md5 digest: %s\n", md5_result);
+	umask(077);
 
-    //make sure any files that are created 
-    umask(077);
+	string user_name = get_real_username();
+	string group_name = get_real_groupname();
 
-    string user_name = get_real_username();
-    string group_name = get_real_groupname();
+	string file_name = user_name + "-" + object_name;
 
-    string file_name = user_name + "-" + object_name;
+	string path = "flat_fs_repo/" + file_name;
 
-    string path = "flat_fs_repo/" + file_name;
+	// Get the random IV
+	ifstream dev_urandom;
+	dev_urandom.open("/dev/urandom");
 
-    // Get the random IV
-    ifstream dev_urandom;
-    dev_urandom.open("/dev/urandom");
-    char * iv = new char[16];
-    char * key = new char[16];
+	char * iv = new char[16];
+	char * key = new char[16];
 
+	if (dev_urandom.is_open()){
+		dev_urandom.read(iv, 16);
+		dev_urandom.read(key, 16);
+	}   
 
-    if (dev_urandom.is_open()){
-        dev_urandom.read(iv, 16);
-        dev_urandom.read(key, 16);
-    }   
+	unsigned char encrypted_key[32];
 
-    //encrypt key with pass -- SIZE + padding of SIZE
-    unsigned char encrypted_key[32];
-    // int size_of_cipher = 16 + ((16 - cin.gcount()) % 16) +16;
+	int returned_size = aes_encrypt((unsigned char *) key, 16, 
+			(unsigned char *) md5_result,
+			(unsigned char *) iv, 
+			encrypted_key);
 
-    int returned_size = aes_encrypt((unsigned char *) key, 16, 
-                    (unsigned char *) md5_result,
-                    (unsigned char *) iv, 
-                    encrypted_key);
-    
-    cerr << returned_size << "  " << 32 << endl; 
+	remove(path.c_str());
+	ofstream file_to_write; 
 
-    //iv
-    //encyrpted_key
-    //md5 hash of password
+	file_to_write.open(path.c_str(), ios::out | ios::binary | ios::app);
 
-    // store encyrpted key along with IV and all those stuff
+	if (file_to_write.is_open()){
 
-    //encrypt document using encrypted key
-    
-    //after we get the IV, get a pseudorandom key 
+		string line;
 
-    //when you objget you pull what should be the encrypted key and the
+		string default_acl = user_name + ".* rwxpv\n%";
 
-    // cerr << iv << endl;
+		file_to_write << default_acl << endl;
 
-    // /* Initialise the Cyrpto library */
-    // ERR_load_crypto_strings();
-    // OpenSSL_add_all_algorithms();
-    // OPENSSL_config(NULL);
+		file_to_write.write(iv, 16);
 
-    // key, iv, message
+		cout.write((const char *)key, 16);
 
-    //initialize cyrpto junk
+		file_to_write.write((const char *)encrypted_key, 32);
 
-    remove(path.c_str());
-    ofstream file_to_write; 
+		char * buffer = new char[4096];
+		cin.read(buffer, 4096);
 
-    file_to_write.open(path.c_str(), ios::out | ios::binary | ios::app);
+		while (cin.gcount() > 0){
+			int size_of_cipher = cin.gcount() + (16 - ( cin.gcount() % 16));
+			unsigned char ciphertext[size_of_cipher];
 
-    if (file_to_write.is_open()){
+			int returned; 
+			if ((returned = aes_encrypt((unsigned char *) buffer, 
+							cin.gcount(), 
+							(unsigned char *) encrypted_key,
+							(unsigned char *) iv, 
+							ciphertext)) != size_of_cipher)
+			{
+				cerr << "encryption failed" << endl;
+				file_to_write.close();	
+				exit(1);
+			}    
 
-        string line;
+			file_to_write.write((const char *)ciphertext, size_of_cipher);
+			cin.read(buffer, 4096);
+		}
 
-        string default_acl = user_name + ".* rwxpv\n%";
+		delete[] buffer;
+		file_to_write.close();
+	}   
 
-        file_to_write << default_acl << endl;
-
-        file_to_write.write(iv, 16);
-        file_to_write.write((const char *)encrypted_key, 32);
-
-        char * buffer = new char[4096];
-        cin.read(buffer, 4096);
-
-        while (cin.gcount() > 0){
-            int size_of_cipher = cin.gcount() + ((16 - cin.gcount()) % 16);
-            //TODO -- do the math correctly for size_of_cipher
-            // int size_of_cipher = 
-
-            unsigned char ciphertext[size_of_cipher];
-	
-            int returned; 
-            if ((returned = aes_encrypt((unsigned char *) buffer, 
-                    cin.gcount(), 
-                    (unsigned char *) encrypted_key,
-                    (unsigned char *) iv, 
-                    ciphertext)) != size_of_cipher)
-            {
-                cerr << "Encryption is not working " <<endl;
-                cerr << returned << "  " << size_of_cipher << endl;
-
-                cerr << cin.gcount() << "cin gcount" << endl;
- 
-                cerr << ciphertext << "\n\n" << endl;
-                cerr << buffer << endl;
-
-                exit(1);
-            }    
-
-            file_to_write.write((const char *)ciphertext, size_of_cipher);
-            cin.read(buffer, 4096);
-        }
-
-        delete[] buffer;
-        file_to_write.close();
-    }   
-
-    delete[] key;
-    delete[] iv;
-    drop_privilege(euid);
+	delete[] key;
+	delete[] iv;
+	drop_privilege(euid);
 
 }
 
