@@ -33,7 +33,7 @@ init_scripts:
 	chmod 700 -R /flat_fs_repo
 	./make_users.sh $(userfile)
 
-	chmod 4333 $(executables)
+	chmod 4001 $(executables)
 
 default: crypto $(executables) 
 
@@ -53,3 +53,4 @@ all: clean default
 .PHONY: test
 test: exec
 	./test1.sh
+	./test2.sh
