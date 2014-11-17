@@ -108,33 +108,27 @@ int main(int argc, char * argv[]){
 		// decrypt the encrypted_key using the md5 of the password:
 		char * key = new char[2*SIZE];
 
-		if (aes_decrypt((unsigned char *) encrypted_key, 2*SIZE, 
+		aes_decrypt((unsigned char *) encrypted_key, 2*SIZE, 
 					(unsigned char *) md5_digest, 
 					(unsigned char *) iv, 
-					(unsigned char *) key ) != SIZE){
-			cerr << "Sorry decryption failed" <<endl;
-			exit(1);
-		}
-
+					(unsigned char *) key );
+	
 		char * encrypted_text = new char[2*SIZE];
 		file_to_read.read(encrypted_text, 2*SIZE);
 
 		while(file_to_read.gcount()>0){
-			cout << file_to_read.gcount() << endl;
+			//cout << file_to_read.gcount() << endl;
 			char * plain_text = new char[2*SIZE];
 
-			if (aes_decrypt((unsigned char *) encrypted_text, 2*SIZE, // file_to_read.gcount(), 
-						(unsigned char *) key,
-						(unsigned char *) iv, 
-						(unsigned char *) plain_text ) < SIZE) {
-				cerr << "Sorry decryption failed" <<endl;
-				//exit(1);
-			}
+			int returned = aes_decrypt((unsigned char *) encrypted_text, file_to_read.gcount(), 
+					(unsigned char *) key,
+					(unsigned char *) iv, 
+					(unsigned char *) plain_text );
 
-			cout.write(plain_text, file_to_read.gcount());
+			cout.write(plain_text, returned);
 			file_to_read.read(encrypted_text, 2*SIZE);
-			
-		//	delete[] plain_text;
+
+			delete[] plain_text;
 		}
 
 		file_to_read.close();

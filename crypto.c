@@ -8,7 +8,7 @@
 void handleErrors(void)
 {
   ERR_print_errors_fp(stderr);
-  
+  exit(1); 
 }
 
 int aes_decrypt(unsigned char *ciphertext, int ciphertext_len, unsigned char *key,

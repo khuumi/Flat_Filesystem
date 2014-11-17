@@ -77,10 +77,6 @@ int main(int argc, char * argv[]){
 	const char * pass_char = pass_phrase.c_str();
 
 	MD5((unsigned char *)pass_char, strlen(pass_char), (unsigned char *)&md5_digest);
-//	char md5_result[33];
-
-//	for(int i = 0; i < 16; i++)
-//		sprintf(&md5_result[i*2], "%02x", (unsigned int)md5_digest[i]);
 
 	umask(077);
 
@@ -95,17 +91,17 @@ int main(int argc, char * argv[]){
 	ifstream dev_urandom;
 	dev_urandom.open("/dev/urandom");
 
-	char * iv = new char[16];
-	char * key = new char[16];
+	char * iv = new char[SIZE];
+	char * key = new char[SIZE];
 
 	if (dev_urandom.is_open()){
-		dev_urandom.read(iv, 16);
-		dev_urandom.read(key, 16);
+		dev_urandom.read(iv, SIZE);
+		dev_urandom.read(key, SIZE);
 	}   
 
-	unsigned char encrypted_key[32];
+	unsigned char encrypted_key[2*SIZE];
 
-	int returned_size = aes_encrypt((unsigned char *) key, 16, 
+	int returned_size = aes_encrypt((unsigned char *) key, SIZE, 
 			(unsigned char *) md5_digest,
 			(unsigned char *) iv, 
 			encrypted_key);
@@ -120,39 +116,31 @@ int main(int argc, char * argv[]){
 		string line;
 
 		string default_acl = user_name + ".* rwxpv\n%";
-
 		file_to_write << default_acl << endl;
+		file_to_write.write(iv, SIZE);
+		file_to_write.write((const char *)encrypted_key, 2*SIZE);
 
-		file_to_write.write(iv, 16);
-
-	//	cout.write((const char *)key, 16);
-
-		file_to_write.write((const char *)encrypted_key, 32);
-
-		char * buffer = new char[1024];
-		cin.read(buffer, 1024);
+		char * buffer = new char[SIZE];
+		cin.read(buffer, SIZE);
 
 		while (cin.gcount() > 0){
-			int size_of_cipher = cin.gcount() + (16 - ( cin.gcount() % 16));
+			int size_of_cipher;
+			if (cin.gcount() % SIZE == 0)
+				size_of_cipher = cin.gcount() + SIZE;
+			else
+				size_of_cipher = cin.gcount() + (SIZE - (cin.gcount() % SIZE));
+
 			unsigned char ciphertext[size_of_cipher];
 
-			int returned; 
-			if ((returned = aes_encrypt((unsigned char *) buffer, 
+			int returned = aes_encrypt((unsigned char *) buffer, 
 							cin.gcount(), 
-							(unsigned char *) encrypted_key,
+							(unsigned char *) key,
 							(unsigned char *) iv, 
-							ciphertext)) != size_of_cipher)
-			{
-				cerr << "encryption failed" << endl;
-				file_to_write.close();	
-				exit(1);
-			}    
+							ciphertext);
 
 			file_to_write.write((const char *)ciphertext, size_of_cipher);
-//			cout.write((const char *)ciphertext, size_of_cipher);
-						
 
-			cin.read(buffer, 1024);
+			cin.read(buffer, SIZE);
 		}
 
 		delete[] buffer;
