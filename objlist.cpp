@@ -41,7 +41,7 @@ int main(int argc, char * argv[]){
 
 
 	string user_name = get_real_username();
-	string path_name = "flat_fs_repo";
+	string path_name = "/flat_fs_repo";
 
 	struct dirent *dir;
 	DIR *d = opendir(path_name.c_str());

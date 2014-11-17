@@ -89,7 +89,7 @@ int main(int argc, char * argv[]){
 	} 
 
 	string file_name = owner_name + "-" + object_name;
-	string path = "flat_fs_repo/" + file_name;
+	string path = "/flat_fs_repo/" + file_name;
 	ifstream file_to_read (path.c_str(), ios::in|ios::binary);
 
 	if (file_to_read.is_open()){ 
@@ -117,7 +117,6 @@ int main(int argc, char * argv[]){
 		file_to_read.read(encrypted_text, 2*SIZE);
 
 		while(file_to_read.gcount()>0){
-			//cout << file_to_read.gcount() << endl;
 			char * plain_text = new char[2*SIZE];
 
 			int returned = aes_decrypt((unsigned char *) encrypted_text, file_to_read.gcount(), 

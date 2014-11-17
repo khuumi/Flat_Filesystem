@@ -7,8 +7,9 @@
 
 void handleErrors(void)
 {
-  ERR_print_errors_fp(stderr);
-  exit(1); 
+  //ERR_print_errors_fp(stderr);
+    fprintf(stderr, "Your encryption failed -- did you put in a correct password?\n");
+	exit(1); 
 }
 
 int aes_decrypt(unsigned char *ciphertext, int ciphertext_len, unsigned char *key,

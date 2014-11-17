@@ -85,7 +85,7 @@ int main(int argc, char * argv[]){
 
 	string file_name = user_name + "-" + object_name;
 
-	string path = "flat_fs_repo/" + file_name;
+	string path = "/flat_fs_repo/" + file_name;
 
 	// Get the random IV
 	ifstream dev_urandom;
@@ -101,7 +101,7 @@ int main(int argc, char * argv[]){
 
 	unsigned char encrypted_key[2*SIZE];
 
-	int returned_size = aes_encrypt((unsigned char *) key, SIZE, 
+	aes_encrypt((unsigned char *) key, SIZE, 
 			(unsigned char *) md5_digest,
 			(unsigned char *) iv, 
 			encrypted_key);
@@ -138,7 +138,7 @@ int main(int argc, char * argv[]){
 							(unsigned char *) iv, 
 							ciphertext);
 
-			file_to_write.write((const char *)ciphertext, size_of_cipher);
+			file_to_write.write((const char *)ciphertext, returned);
 
 			cin.read(buffer, SIZE);
 		}

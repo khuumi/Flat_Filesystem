@@ -52,7 +52,7 @@ int main(int argc, char * argv[]){
 	}
 
 	string file_name = owner_name + "-" + object_name;
-	string path = "flat_fs_repo/" + file_name;
+	string path = "/flat_fs_repo/" + file_name;
 
 
 	ifstream file_to_read;
