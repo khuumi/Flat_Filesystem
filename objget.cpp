@@ -7,8 +7,6 @@
 #include "tools.h"
 #include <string.h>
 
-
-
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
@@ -17,6 +15,9 @@
 extern "C" {
 #include "crypto.h"
 }
+
+
+const int SIZE = 16;
 
 using namespace std;
 
@@ -67,10 +68,6 @@ int main(int argc, char * argv[]){
 	const char * pass_char = pass_phrase.c_str();
 
 	MD5((unsigned char *)pass_char, strlen(pass_char), (unsigned char *)&md5_digest);
-	char md5_result[33];
-
-	for(int i = 0; i < 16; i++)
-		sprintf(&md5_result[i*2], "%02x", (unsigned int)md5_digest[i]);
 
 	uid_t euid = get_uid("flat_fs");
 
@@ -92,11 +89,8 @@ int main(int argc, char * argv[]){
 	} 
 
 	string file_name = owner_name + "-" + object_name;
-
 	string path = "flat_fs_repo/" + file_name;
-
 	ifstream file_to_read (path.c_str(), ios::in|ios::binary);
-
 
 	if (file_to_read.is_open()){ 
 
@@ -105,44 +99,42 @@ int main(int argc, char * argv[]){
 			exit(1);
 		}   
 
-		char * iv = new char[16];
-		char * encrypted_key = new char[32];
+		char * iv = new char[SIZE];
+		char * encrypted_key = new char[2*SIZE];
 
-		file_to_read.read(iv,16);
-		file_to_read.read(encrypted_key, 32);
+		file_to_read.read(iv, SIZE);
+		file_to_read.read(encrypted_key, 2*SIZE);
 
 		// decrypt the encrypted_key using the md5 of the password:
+		char * key = new char[2*SIZE];
 
-		char * key = new char[32];
-
-		if (aes_decrypt((unsigned char *) encrypted_key, 32, 
-					(unsigned char *) md5_result, 
-					(unsigned char *) iv, (unsigned char *) key ) != 16){
+		if (aes_decrypt((unsigned char *) encrypted_key, 2*SIZE, 
+					(unsigned char *) md5_digest, 
+					(unsigned char *) iv, 
+					(unsigned char *) key ) != SIZE){
 			cerr << "Sorry decryption failed" <<endl;
 			exit(1);
 		}
 
-
-		char * encrypted_text = new char[1024];
-
-		file_to_read.read(encrypted_text, 1024);
+		char * encrypted_text = new char[2*SIZE];
+		file_to_read.read(encrypted_text, 2*SIZE);
 
 		while(file_to_read.gcount()>0){
-			
-			char * plain_text = new char[file_to_read.gcount()];
+			cout << file_to_read.gcount() << endl;
+			char * plain_text = new char[2*SIZE];
 
-			if (aes_decrypt((unsigned char *) encrypted_text, file_to_read.gcount(), 
-						(unsigned char *) key, (unsigned char *) iv, 
-						(unsigned char *)plain_text ) != file_to_read.gcount()) {
+			if (aes_decrypt((unsigned char *) encrypted_text, 2*SIZE, // file_to_read.gcount(), 
+						(unsigned char *) key,
+						(unsigned char *) iv, 
+						(unsigned char *) plain_text ) < SIZE) {
 				cerr << "Sorry decryption failed" <<endl;
-				exit(1);
+				//exit(1);
 			}
 
-
 			cout.write(plain_text, file_to_read.gcount());
-			file_to_read.read(encrypted_text, 1024);
+			file_to_read.read(encrypted_text, 2*SIZE);
 			
-			delete[] plain_text;
+		//	delete[] plain_text;
 		}
 
 		file_to_read.close();

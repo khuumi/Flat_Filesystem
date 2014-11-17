@@ -18,6 +18,8 @@ extern "C" {
 #include "crypto.h"
 }
 
+const int SIZE = 16;
+
 using namespace std;
 
 int main(int argc, char * argv[]){
@@ -75,10 +77,10 @@ int main(int argc, char * argv[]){
 	const char * pass_char = pass_phrase.c_str();
 
 	MD5((unsigned char *)pass_char, strlen(pass_char), (unsigned char *)&md5_digest);
-	char md5_result[33];
+//	char md5_result[33];
 
-	for(int i = 0; i < 16; i++)
-		sprintf(&md5_result[i*2], "%02x", (unsigned int)md5_digest[i]);
+//	for(int i = 0; i < 16; i++)
+//		sprintf(&md5_result[i*2], "%02x", (unsigned int)md5_digest[i]);
 
 	umask(077);
 
@@ -104,7 +106,7 @@ int main(int argc, char * argv[]){
 	unsigned char encrypted_key[32];
 
 	int returned_size = aes_encrypt((unsigned char *) key, 16, 
-			(unsigned char *) md5_result,
+			(unsigned char *) md5_digest,
 			(unsigned char *) iv, 
 			encrypted_key);
 
@@ -123,12 +125,12 @@ int main(int argc, char * argv[]){
 
 		file_to_write.write(iv, 16);
 
-		cout.write((const char *)key, 16);
+	//	cout.write((const char *)key, 16);
 
 		file_to_write.write((const char *)encrypted_key, 32);
 
-		char * buffer = new char[4096];
-		cin.read(buffer, 4096);
+		char * buffer = new char[1024];
+		cin.read(buffer, 1024);
 
 		while (cin.gcount() > 0){
 			int size_of_cipher = cin.gcount() + (16 - ( cin.gcount() % 16));
@@ -147,7 +149,10 @@ int main(int argc, char * argv[]){
 			}    
 
 			file_to_write.write((const char *)ciphertext, size_of_cipher);
-			cin.read(buffer, 4096);
+//			cout.write((const char *)ciphertext, size_of_cipher);
+						
+
+			cin.read(buffer, 1024);
 		}
 
 		delete[] buffer;
